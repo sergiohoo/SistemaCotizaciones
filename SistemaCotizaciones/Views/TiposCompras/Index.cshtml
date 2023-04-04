@@ -1,0 +1,35 @@
+﻿@model IEnumerable<SistemaCotizaciones.Model.TipoCompra>
+
+@{
+    ViewData["Title"] = "Tipos de compra";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Tipos de compra</h2>
+
+<p>
+    <a asp-action="Create">Crear nuevo tipo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TipoCompraId"><i class="fa-solid fa-pen-to-square"></i></a> |
+                <a asp-action="Delete" asp-route-id="@item.TipoCompraId"><i class="fa-solid fa-trash"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

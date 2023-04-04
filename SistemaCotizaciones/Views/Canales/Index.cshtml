@@ -1,0 +1,65 @@
+﻿@model IEnumerable<SistemaCotizaciones.Model.Canal>
+
+@{
+    ViewData["Title"] = "Canales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Canales</h2>
+
+<p>
+    <a asp-action="Create">Crear nuevo canal</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Rut)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.RazonSocial)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telefono)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumeroClienteIngram)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rut)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RazonSocial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefono)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroClienteIngram)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CanalId"><i class="fa-solid fa-pen-to-square"></i></a> |
+                <a asp-action="Delete" asp-route-id="@item.CanalId"><i class="fa-solid fa-trash"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

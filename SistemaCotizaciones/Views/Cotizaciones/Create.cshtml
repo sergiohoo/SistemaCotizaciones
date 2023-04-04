@@ -1,0 +1,240 @@
+﻿@model SistemaCotizaciones.Model.Cotizacion
+
+@{
+    ViewData["Title"] = "Crear nuevo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .visible {
+        display: table-row;
+    }
+
+    .oculta {
+        display: none;
+    }
+</style>
+
+<h2>Crear nuevo</h2>
+
+<h4>Cotizacion</h4>
+<hr />
+<form asp-action="Create" class="row">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group col-md-2 col-sm-12">
+        <label asp-for="UsuarioId" class="control-label"></label>
+        <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.UsuarioId">
+            <option value="">Seleccione usuario</option>
+        </select>
+    </div>
+    <div class="form-group col-md-3 col-sm-12">
+        <label asp-for="FabricanteId" class="control-label"></label>
+        <select asp-for="FabricanteId" class="form-control" asp-items="ViewBag.FabricanteId">
+            <option value="">Seleccione fabricante</option>
+        </select>
+    </div>
+    <div class="form-group col-md-3 col-sm-12">
+        <label asp-for="QuoteId" class="control-label"></label>
+        <select asp-for="QuoteId" class="form-control" asp-items="ViewBag.QuoteId">
+            <option value="">Seleccione número de quote</option>
+        </select>
+    </div>
+    <div class="form-group col-md-2 col-sm-12">
+        <label asp-for="TipoCotizacionId" class="control-label"></label>
+        <select asp-for="TipoCotizacionId" class="form-control" asp-items="ViewBag.TipoCotizacionId">
+            <option value="">Seleccione tipo de cotización</option>
+        </select>
+    </div>
+    <div class="form-group col-md-2 col-sm-12">
+        <label asp-for="TipoCompraId" class="control-label"></label>
+        <select asp-for="TipoCompraId" class="form-control" asp-items="ViewBag.TipoCompraId">
+            <option value="">Seleccione tipo de compra</option>
+        </select>
+    </div>
+    <hr />
+    <div class="form-group col-md-3 col-sm-12">
+        <label asp-for="CanalId" class="control-label"></label>
+        <select asp-for="CanalId" class="form-control" asp-items="ViewBag.CanalId">
+            <option value="">Seleccione canal</option>
+        </select>
+    </div>
+    <div class="form-group col-md-3 col-sm-12">
+        <label asp-for="ContactoCanalId" class="control-label"></label>
+        <select asp-for="ContactoCanalId" class="form-control" asp-items="ViewBag.ContactoCanalId">
+            <option value="">Seleccione contacto de canal</option>
+        </select>
+    </div>
+    <div class="form-group col-md-3 col-sm-12">
+        <label asp-for="ClienteFinalId" class="control-label"></label>
+        <select asp-for="ClienteFinalId" class="form-control" asp-items="ViewBag.ClienteFinalId">
+            <option value="">Seleccione cliente final</option>
+        </select>
+    </div>
+    <div class="form-group col-md-3 col-sm-12">
+        <label asp-for="ContactoClienteFinalId" class="control-label"></label>
+        <select asp-for="ContactoClienteFinalId" class="form-control" asp-items="ViewBag.ContactoClienteFinalId">
+            <option value="">Seleccione contacto cliente final</option>
+        </select>
+    </div>
+    <div class="form-group col-md-2 col-sm-12">
+        <label asp-for="Duty" class="control-label"></label>
+        <input asp-for="Duty" class="form-control" />
+        <span asp-validation-for="Duty" class="text-danger"></span>
+    </div>
+    <div class="form-group col-md-2 col-sm-12">
+        <label asp-for="Impuesto" class="control-label"></label>
+        <input asp-for="Impuesto" class="form-control" />
+        <span asp-validation-for="Impuesto" class="text-danger"></span>
+    </div>
+    <div class="form-group col-md-2 col-sm-12">
+        <label asp-for="Margen" class="control-label"></label>
+        <input asp-for="Margen" class="form-control" />
+        <span asp-validation-for="Margen" class="text-danger"></span>
+    </div>
+    <div class="form-group col-md-6 col-sm-12">
+        <label asp-for="Observaciones" class="control-label"></label>
+        <textarea asp-for="Observaciones" class="form-control"></textarea>
+        <span asp-validation-for="Observaciones" class="text-danger"></span>
+    </div>
+
+    <div class="col-md-12 col-sm-12">
+        <table id="tablaMateriales" class="table table-condensed table-striped table-bordered small">
+            <tr>
+                <th></th>
+                <th>MATERIAL</th>
+                <th>CANTIDAD</th>
+                <th>PRECIO</th>
+                <th>DESCUENTO</th>
+                <th>FECHA INICIO</th>
+                <th>FECHA TÉRMINO</th>
+            </tr>
+            @{
+                for (int i = 1; i <= 5; i++)
+                {
+                    <tr id="tr_@i" class="visible">
+                        <td>@i</td>
+                        <td style="padding:0">
+                            <select asp-for="MaterialesCotizacion[i-1].MaterialId" class="form-control small" asp-items="ViewBag.Materiales">
+                                <option value=""></option>
+                            </select>
+                        </td>
+                        <td style="padding:0"><input type="number" asp-for="MaterialesCotizacion[i-1].Cantidad" class="form-control small" /></td>
+                        <td style="padding:0"><input type="number" asp-for="MaterialesCotizacion[i-1].PrecioUnitario" class="form-control small" /></td>
+                        <td style="padding:0"><input type="number" asp-for="MaterialesCotizacion[i-1].DescuentoAbsoluto" class="form-control small" /></td>
+                        <td style="padding:0"><input type="date" asp-for="MaterialesCotizacion[i-1].FechaInicio" class="form-control small" /></td>
+                        <td style="padding:0"><input type="date" asp-for="MaterialesCotizacion[i-1].FechaTermino" class="form-control small" /></td>
+                    </tr>
+                }
+                for (int i = 6; i < 100; i++)
+                {
+                    <tr id="tr_@i" class="oculta">
+                        <td>@i</td>
+                        <td style="padding:0">
+                            <select name="MaterialesCotizacion.MaterialId" class="form-control small" asp-items="ViewBag.Materiales">
+                                <option value=""></option>
+                            </select>
+                        </td>
+                        <td style="padding:0"><input type="number" asp-for="MaterialesCotizacion[i-1].Cantidad" class="form-control small" /></td>
+                        <td style="padding:0"><input type="number" asp-for="MaterialesCotizacion[i-1].DescuentoAbsoluto" class="form-control small" /></td>
+                        <td style="padding:0"><input type="number" asp-for="MaterialesCotizacion[i-1].PrecioUnitario" class="form-control small" /></td>
+                        <td style="padding:0"><input type="date" asp-for="MaterialesCotizacion[i-1].FechaTermino" class="form-control small" /></td>
+                        <td style="padding:0"><input type="date" asp-for="MaterialesCotizacion[i-1].FechaInicio" class="form-control small" /></td>
+                    </tr>
+                }
+            }
+            <tr>
+                <td colspan="6">
+                    <button type="button" class="btn btn-success" onclick="addRow();"><i class="fas fa-plus-circle"></i></button>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+
+    <div class="form-group col-md-12 col-sm-12 text-right">
+        <input type="submit" value="Guardar" class="btn btn-primary" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Volver al listado</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+
+    function addRow() {
+        var last = $("#tablaMateriales").find("tr.visible").last().next().addClass("visible").removeClass("oculta");
+        console.log(last);
+    }
+
+    $(function () {
+        $("#CanalId").on("change", function () {
+            var canalId = $(this).val();
+            $("#ContactoCanalId").empty();
+            $("#ContactoCanalId").append("<option value=''>Seleccione contacto</option>");
+
+            $.ajax({
+                url: "/Cotizaciones/GetContactosCanal",
+                type: "GET",
+                data: "canalId=" + canalId,
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        $("#ContactoCanalId").append(`<option value="${item.contactoCanalId}">${item.nombre} ${item.apellido}</option>`);
+                    });
+                },
+                error: function (error) {
+                }
+            });
+        });
+    });
+
+    $(function () {
+        $("#ClienteFinalId").on("change", function () {
+            var clienteId = $(this).val();
+            $("#ContactoClienteFinalId").empty();
+            $("#ContactoClienteFinalId").append("<option value=''>Seleccione contacto</option>");
+
+            $.ajax({
+                url: "/Cotizaciones/GetContactosClienteFinal",
+                type: "GET",
+                data: "clienteId=" + clienteId,
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        $("#ContactoClienteFinalId").append(`<option value="${item.contactoClienteFinalId}">${item.nombre} ${item.apellido}</option>`);
+                    });
+                },
+                error: function (error) {
+                }
+            });
+        });
+    });
+
+    $(function () {
+        $("#ClienteFinalId").on("change", function () {
+            var clienteId = $(this).val();
+            $("#ContactoClienteFinalId").empty();
+            $("#ContactoClienteFinalId").append("<option value=''>Seleccione contacto</option>");
+
+            $.ajax({
+                url: "/Cotizaciones/GetContactosClienteFinal",
+                type: "GET",
+                data: "clienteId=" + clienteId,
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        $("#ContactoClienteFinalId").append(`<option value="${item.contactoClienteFinalId}">${item.nombre} ${item.apellido}</option>`);
+                    });
+                },
+                error: function (error) {
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,65 @@
+﻿@model IEnumerable<SistemaCotizaciones.Model.Quote>
+
+@{
+    ViewData["Title"] = "Quotes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Quotes</h2>
+
+<p>
+    <a asp-action="Create">Crear nueva quote</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Fabricante)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ContactoFabricante)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumeroQuote)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NombreOportunidad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vigencia)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaEmision)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fabricante.FabricanteId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ContactoFabricante.ContactoFabricanteId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroQuote)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NombreOportunidad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vigencia)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaEmision)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.QuoteId"><i class="fa-solid fa-pen-to-square"></i></a> |
+                <a asp-action="Delete" asp-route-id="@item.QuoteId"><i class="fa-solid fa-trash"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

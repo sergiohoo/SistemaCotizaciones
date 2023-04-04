@@ -1,0 +1,53 @@
+﻿@model IEnumerable<SistemaCotizaciones.Model.Cotizacion>
+
+@{
+    ViewData["Title"] = "Cotizaciones";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Cotizaciones</h2>
+
+<p>
+    <a asp-action="Create">Crear nueva cotización</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Usuario)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Quote)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Canal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ClienteFinal)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Usuario.NombreUsuario)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quote.NumeroQuote)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Canal.RazonSocial)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ClienteFinal.RazonSocial)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CotizacionId"><i class="fa-solid fa-pen-to-square"></i></a> |
+                <a asp-action="Delete" asp-route-id="@item.CotizacionId"><i class="fa-solid fa-trash"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

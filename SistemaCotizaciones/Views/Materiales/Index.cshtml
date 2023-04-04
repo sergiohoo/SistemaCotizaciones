@@ -1,0 +1,65 @@
+﻿@model IEnumerable<SistemaCotizaciones.Model.Material>
+
+@{
+    ViewData["Title"] = "Materiales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Materiales</h2>
+
+<p>
+    <a asp-action="Create">Crear nuevo material</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Descripcion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Sku)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NumeroSerie)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CodigoImpulse)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PrecioUnitario)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Descripcion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sku)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumeroSerie)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CodigoImpulse)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PrecioUnitario)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.MaterialId"><i class="fa-solid fa-pen-to-square"></i></a> |
+                <a asp-action="Delete" asp-route-id="@item.MaterialId"><i class="fa-solid fa-trash"></i></a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

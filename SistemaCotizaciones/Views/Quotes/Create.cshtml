@@ -1,0 +1,57 @@
+﻿@model SistemaCotizaciones.Model.Quote
+
+@{
+    ViewData["Title"] = "Crear nuevo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Crear nuevo</h2>
+
+<h4>Quote</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="FabricanteId" class="control-label"></label>
+                <select asp-for="FabricanteId" class ="form-control" asp-items="ViewBag.FabricanteId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ContactoFabricanteId" class="control-label"></label>
+                <select asp-for="ContactoFabricanteId" class ="form-control" asp-items="ViewBag.ContactoFabricanteId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="NumeroQuote" class="control-label"></label>
+                <input asp-for="NumeroQuote" class="form-control" />
+                <span asp-validation-for="NumeroQuote" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NombreOportunidad" class="control-label"></label>
+                <input asp-for="NombreOportunidad" class="form-control" />
+                <span asp-validation-for="NombreOportunidad" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Vigencia" /> @Html.DisplayNameFor(model => model.Vigencia)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="FechaEmision" class="control-label"></label>
+                <input asp-for="FechaEmision" class="form-control" />
+                <span asp-validation-for="FechaEmision" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Guardar" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Volver al listado</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
