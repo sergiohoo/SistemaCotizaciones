@@ -23,7 +23,7 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Salir</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link text-dark dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -31,6 +31,7 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item text-dark" asp-area="" asp-controller="Materiales" asp-action="Index">Materiales</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Quotes" asp-action="Index">Quotes</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-dark" asp-area="" asp-controller="Fabricantes" asp-action="Index">Fabricantes</a>
                                 <a class="dropdown-item text-dark" asp-area="" asp-controller="ContactosFabricantes" asp-action="Index">&nbsp;&nbsp;Contactos</a>
@@ -45,10 +46,8 @@
                                 <a class="dropdown-item text-dark" asp-area="" asp-controller="TiposCompras" asp-action="Index">Tipos compras</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item text-dark" asp-area="" asp-controller="Usuarios" asp-action="Index">Usuarios</a>
+                                <a class="dropdown-item text-dark" asp-area="" asp-controller="Usuarios" asp-action="UserPasswordsSet">Contraseñas</a>
                             </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Quotes" asp-action="Index">Quotes</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Cotizaciones" asp-action="Index">Cotizaciones</a>

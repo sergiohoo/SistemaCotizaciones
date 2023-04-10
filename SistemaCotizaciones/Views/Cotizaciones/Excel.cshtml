@@ -4,7 +4,7 @@
     Layout = "~/Views/Shared/Empty.cshtml";
 }
 
-<html id="documento">
+<html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -21,11 +21,23 @@
                 width: 21.59cm;
                 height: 27.94cm;
                 margin: 2.5mm 2.5mm 2.5mm 2.5mm;
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            .table th {
+                background-color: #222 !important;
+                -webkit-print-color-adjust: exact;
+                white-space: nowrap !important;
             }
         }
 
         .table td, .table th {
-            padding: 0px 1px;
+            padding: 3px 3px;
+        }
+
+        body {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
         }
     </style>
 
@@ -36,7 +48,7 @@
 }
 
 <body onload="exportar();">
-    <table id="tabla-cotizacion" class="table table-bordered small">
+    <table id="tabla-cotizacion" class="table table-borderless small">
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -80,28 +92,28 @@
         </tr>
         <tr>
             <td></td>
-            <td class="bg-dark text-white">
+            <th style="background-color:#222; color:#fff">
                 Fecha:
-            </td>
+            </th>
             <td>@DateTime.Now.ToString("dd MMM yyyy")</td>
             <td colspan="3"></td>
-            <td colspan="2" class="bg-dark text-white">Cotización:</td>
+            <th colspan="2" style="background-color:#222; color:#fff">Cotización:</th>
             <td></td>
         </tr>
         <tr>
             <td></td>
-            <td class="bg-dark text-white">
+            <th style="background-color:#222; color:#fff">
                 Partner:
-            </td>
+            </th>
             <td colspan="4">@Model.cotizacion.Canal.RazonSocial</td>
             <td colspan="2">@idCotizacion.ToString().PadLeft(10,'0')</td>
             <td></td>
         </tr>
         <tr>
             <td></td>
-            <td class="bg-dark text-white" style="white-space:nowrap">
+            <th style="background-color:#222; color:#fff" style="white-space:nowrap">
                 Cliente final:
-            </td>
+            </th>
             <td colspan="4">@Model.cotizacion.ClienteFinal.RazonSocial</td>
             <td colspan="2"></td>
             <td></td>
@@ -112,15 +124,15 @@
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td></td>
-            <td class="bg-dark text-white text-center">QTy</td>
-            <td class="bg-dark text-white text-center">SKU</td>
-            <td class="bg-dark text-white text-center">Descripción</td>
-            <td class="bg-dark text-white text-center">SN</td>
-            <td class="bg-dark text-white text-center">Período</td>
-            <td class="bg-dark text-white text-center" style="white-space:nowrap;">Valor unitario</td>
-            <td class="bg-dark text-white text-center">Total</td>
-            <td></td>
+            <th></th>
+            <th class="text-center" style="background-color:#222; color:#fff; border:#999 1px solid;">QTy</th>
+            <th class="text-center" style="background-color:#222; color:#fff; border:#999 1px solid;">SKU</th>
+            <th class="text-center" style="background-color:#222; color:#fff; border:#999 1px solid;">Descripción</th>
+            <th class="text-center" style="background-color:#222; color:#fff; border:#999 1px solid;">SN</th>
+            <th class="text-center" style="background-color:#222; color:#fff; border:#999 1px solid;">Período</th>
+            <th class="text-center" style="background-color:#222; color:#fff; border:#999 1px solid;" style="white-space:nowrap;">Valor unitario</th>
+            <th class="text-center" style="background-color:#222; color:#fff; border:#999 1px solid; ">Total</th>
+            <th></th>
         </tr>
 
         @{
@@ -130,14 +142,14 @@
                 counter++;
 
                 <tr>
-                    <td class="text-right">@counter.ToString()</td>
-                    <td class="text-right">@material.Cantidad</td>
-                    <td style="white-space:nowrap;">@material.Material.Nombre</td>
-                    <td>@material.Material.Descripcion</td>
-                    <td>@material.Material.NumeroSerie</td>
-                    <td style="white-space:nowrap;" class="text-center">@material.FechaInicio?.ToString("dd/MM/yyyy").Replace("-","/") - @material.FechaTermino?.ToString("dd/MM/yyyy").Replace("-","/")</td>
-                    <td class="text-right">@material.PrecioCliente?.ToString("N0")</td>
-                    <td class="text-right">@material.TotalNeto?.ToString("N0")</td>
+                    <td style="border:#999 1px solid;" class="text-right">@counter.ToString()</td>
+                    <td style="border:#999 1px solid;" class="text-right">@material.Cantidad</td>
+                    <td style="white-space:nowrap; border:#999 1px solid;">@material.Material.Nombre</td>
+                    <td style="border:#999 1px solid;">@material.Material.Descripcion</td>
+                    <td style="border:#999 1px solid;">@material.Material.NumeroSerie</td>
+                    <td style="white-space:nowrap; border:#999 1px solid;" class="text-center">@material.FechaInicio?.ToString("dd/MM/yyyy").Replace("-","/") - @material.FechaTermino?.ToString("dd/MM/yyyy").Replace("-","/")</td>
+                    <td style="border:#999 1px solid;" class="text-right">@material.PrecioCliente?.ToString("N0")</td>
+                    <td style="border:#999 1px solid;" class="text-right">@material.TotalNeto?.ToString("N0")</td>
                     <td></td>
                 </tr>
             }
@@ -151,8 +163,8 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>Neto</td>
-            <td class="text-right">@Model.cotizacion.TotalNeto.ToString("N0")</td>
+            <td style="border:#999 1px solid;">Neto</td>
+            <td style="border:#999 1px solid;" class="text-right">@Model.cotizacion.TotalNeto.ToString("N0")</td>
         </tr>
         <tr>
             <td></td>
@@ -161,8 +173,8 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>IVA</td>
-            <td class="text-right">@iva.ToString("N0")</td>
+            <td style="border:#999 1px solid;">IVA</td>
+            <td style="border:#999 1px solid;" class="text-right">@iva.ToString("N0")</td>
         </tr>
         <tr>
             <td></td>
@@ -171,8 +183,8 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>TOTAL</td>
-            <td class="text-right">@Model.cotizacion.TotalIVA.ToString("N0")</td>
+            <td style="border:#999 1px solid;">TOTAL</td>
+            <td style="border:#999 1px solid;" class="text-right">@Model.cotizacion.TotalIVA.ToString("N0")</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
@@ -399,10 +411,12 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/lib/bootstrap-select/js/bootstrap-select.min.js"></script>
-    <script src="~/js/bootstrap-export.js"></script>
+    <script src="~/lib/table-export/tableexport.min.js"></script>
+    <script src="~/lib/table-export/filesaver/filesaver.min.js"></script>
+    <script src="~/lib/table-export/js-xlsx/xlsx.core.min.js"></script>
     <script>
         function exportar() {
-            $('#documento').tableExport({ type: 'excel' });
+            $('#tabla-cotizacion').tableExport({ type: 'xlsx' });
         }
     </script>
 </body>

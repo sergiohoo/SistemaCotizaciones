@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SistemaCotizaciones.Model;
 using SistemaCotizaciones.Models;
 using System.Diagnostics;
 
@@ -8,9 +9,33 @@ namespace SistemaCotizaciones.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ApplicationDbContext _context;
+
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context;
+        }
+
+        [HttpPost]
+        public IActionResult Login(string user, string pass)
+        {
+            if (user != null && pass != null)
+            {
+                var _user = _context.Usuarios.Where(u => u.NombreUsuario == user).FirstOrDefault();
+                if (_user != null && _user.Contraseña == pass)
+                {
+                    return RedirectToAction("Index", "Cotizaciones");
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
         public IActionResult Index()

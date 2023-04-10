@@ -19,6 +19,28 @@ namespace SistemaCotizaciones.Controllers
             _context = context;
         }
 
+        public IActionResult MaterialDelete(int id,int idCotizacion)
+        {
+            var material = _context.MaterialesCotizacion.Where(m => m.CotizacionId == idCotizacion && m.MaterialCotizacionId == id).FirstOrDefault();
+            if(material != null)
+            {
+                _context.Remove(material);
+                _context.SaveChanges();
+            }
+            return RedirectToAction(nameof(Edit), new { id = idCotizacion });
+        }
+
+        public IActionResult PDF(int id)
+        {
+            var cotizacion = _context.Cotizaciones.Where(c => c.CotizacionId == id).Include(c => c.Usuario).Include(c => c.MaterialesCotizacion).ThenInclude(m => m.Material).Include(c => c.ClienteFinal).Include(c => c.Canal).FirstOrDefault();
+            var model = new CotizacionExcelViewModel
+            {
+                cotizacion = cotizacion
+            };
+
+            return View(model);
+        }
+
         public IActionResult Excel(int id)
         {
             var cotizacion = _context.Cotizaciones.Where(c => c.CotizacionId == id).Include(c => c.Usuario).Include(c => c.MaterialesCotizacion).ThenInclude(m => m.Material).Include(c => c.ClienteFinal).Include(c => c.Canal).FirstOrDefault();
@@ -173,7 +195,7 @@ namespace SistemaCotizaciones.Controllers
                 return NotFound();
             }
 
-            var cotizacion = await _context.Cotizaciones.Where(c => c.CotizacionId == id).Include(c => c.MaterialesCotizacion).FirstOrDefaultAsync();
+            var cotizacion = await _context.Cotizaciones.Where(c => c.CotizacionId == id).Include(c => c.MaterialesCotizacion).ThenInclude(m => m.Material).FirstOrDefaultAsync();
             var quote = await _context.Quotes.Where(q => q.QuoteId == cotizacion.QuoteId).FirstOrDefaultAsync();
             if (cotizacion == null || quote == null)
             {
@@ -382,6 +404,11 @@ namespace SistemaCotizaciones.Controllers
             var cotizacion = await _context.Cotizaciones.FindAsync(id);
             if (cotizacion != null)
             {
+                var materiales = _context.MaterialesCotizacion.Where(m => m.CotizacionId == id).ToList();
+                foreach(var material in materiales)
+                {
+                    _context.Remove(material);
+                }
                 _context.Cotizaciones.Remove(cotizacion);
             }
 

@@ -47,7 +47,8 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.CotizacionId"><i class="fa-solid fa-pen-to-square"></i></a> |
                     <a asp-action="Delete" asp-route-id="@item.CotizacionId"><i class="fa-solid fa-trash"></i></a> |
-                    <a asp-action="Excel" asp-route-id="@item.CotizacionId" target="_blank"><i class="fas fa-file-excel"></i></a>
+                    <a asp-action="Excel" asp-route-id="@item.CotizacionId" target="_blank"><i class="fas fa-file-excel"></i></a> |
+                    <a asp-action="PDF" asp-route-id="@item.CotizacionId" target="_blank"><i class="fas fa-file-pdf"></i></a>
                 </td>
             </tr>
         }

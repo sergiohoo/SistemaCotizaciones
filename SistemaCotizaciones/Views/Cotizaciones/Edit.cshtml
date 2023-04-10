@@ -173,19 +173,23 @@
                 <th></th>
                 <th>MATERIAL</th>
                 <th class="text-right">CANTIDAD</th>
-                <th class ="text-right">PRECIO [$]</th>
+                <th class="text-right">PRECIO [$]</th>
                 <th class="text-right">DESC [%]</th>
                 <th class="text-right">IMP/DUTY [%]</th>
                 <th class="text-right">CLIENTE [$]</th>
                 <th class="text-center">INICIO</th>
                 <th class="text-center">TÉRMINO</th>
                 <th class="text-right">TOTAL NETO</th>
+                <th></th>
             </tr>
             @{
                 var nCotizaciones = Model.Cotizacion.MaterialesCotizacion.Where(c => c.TotalNeto != null).ToList().Count;
 
                 for (int i = 1; i <= nCotizaciones; i++)
                 {
+                    var idDelete = Model.Cotizacion.MaterialesCotizacion[i - 1].MaterialCotizacionId;
+                    var skuDelete = Model.Cotizacion.MaterialesCotizacion[i - 1].Material.Nombre;
+
                     <tr id="tr_@i" class="visible">
                         <input type="hidden" asp-for="Cotizacion.MaterialesCotizacion[i-1].MaterialCotizacionId" />
                         <td class="text-right">@i</td>
@@ -202,6 +206,7 @@
                         <td><input type="date" asp-for="Cotizacion.MaterialesCotizacion[i-1].FechaInicio" class="form-control small" /></td>
                         <td><input type="date" asp-for="Cotizacion.MaterialesCotizacion[i-1].FechaTermino" class="form-control small" /></td>
                         <td><input type="number" min="0" step="1" asp-for="Cotizacion.MaterialesCotizacion[i-1].TotalNeto" readonly class="form-control small mTotalNeto text-primary" /></td>
+                        <td><button type="button" class="text-danger border-0" onclick="deleteMaterial('@idDelete','@skuDelete')"><i class="fas fa-trash-alt"></i></button></td>
                     </tr>
                 }
                 for (int i = nCotizaciones + 1; i < 100; i++)
@@ -221,11 +226,12 @@
                         <td><input type="date" asp-for="Cotizacion.MaterialesCotizacion[i-1].FechaInicio" class="form-control small" /></td>
                         <td><input type="date" asp-for="Cotizacion.MaterialesCotizacion[i-1].FechaTermino" class="form-control small" /></td>
                         <td><input type="number" min="0" step="1" asp-for="Cotizacion.MaterialesCotizacion[i-1].TotalNeto" readonly class="form-control small mTotalNeto text-primary" /></td>
+                        <td></td>
                     </tr>
                 }
             }
             <tr>
-                <td colspan="10" class="text-right">
+                <td colspan="11" class="text-left">
                     <button type="button" class="btn btn-success" onclick="addRow();"><i class="fas fa-plus-circle"></i></button>
                 </td>
             </tr>
@@ -250,6 +256,30 @@
     <a asp-action="Index">Volver al listado</a>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form asp-action="MaterialDelete" class="modal-content">
+            <input type="hidden" id="id-delete" name="id" />
+            <input type="hidden" value="@Model.Cotizacion.CotizacionId" name="idCotizacion" />
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Eliminar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Está seguro de que desea eliminar este ítem?
+                <p id="sku-delete" class="text-primary"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <input type="submit" class="btn btn-danger" value="Eliminar" />
+            </div>
+        </form>
+    </div>
+</div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -258,6 +288,14 @@
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
+
+    function deleteMaterial(id,sku)
+    {
+        $("#id-delete").val(id);
+        $("#sku-delete").html(sku);
+
+        $("#modalDelete").modal("show");
+    }
 
     function CalculaTotales() {
         var total = 0;

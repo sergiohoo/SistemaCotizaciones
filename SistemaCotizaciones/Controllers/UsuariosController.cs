@@ -21,9 +21,9 @@ namespace SistemaCotizaciones.Controllers
         // GET: Usuarios
         public async Task<IActionResult> Index()
         {
-              return _context.Usuarios != null ? 
-                          View(await _context.Usuarios.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Usuarios'  is null.");
+            return _context.Usuarios != null ?
+                        View(await _context.Usuarios.ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.Usuarios'  is null.");
         }
 
         // GET: Usuarios/Details/5
@@ -50,12 +50,36 @@ namespace SistemaCotizaciones.Controllers
             return View();
         }
 
+        public IActionResult UserPasswordsSet()
+        {
+            return View();
+        }
+
         // POST: Usuarios/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UsuarioId,NombreUsuario,Nombre,Apellido,Contraseña")] Usuario usuario)
+        public async Task<IActionResult> UserPasswordsSet(Usuario usuario)
+        {
+            if (usuario.Contraseña != "")
+            {
+                var _usuarios = _context.Usuarios.ToList();
+                foreach (var _usuario in _usuarios)
+                {
+                    _usuario.Contraseña = usuario.Contraseña;
+                    _context.Update(_usuario);
+                    await _context.SaveChangesAsync();
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("UsuarioId,NombreUsuario,Nombre,Apellido,Email,Telefono,Contraseña")] Usuario usuario)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +111,7 @@ namespace SistemaCotizaciones.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UsuarioId,NombreUsuario,Nombre,Apellido,Contraseña")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("UsuarioId,NombreUsuario,Nombre,Apellido,Email,Telefono,Contraseña")] Usuario usuario)
         {
             if (id != usuario.UsuarioId)
             {
@@ -149,14 +173,14 @@ namespace SistemaCotizaciones.Controllers
             {
                 _context.Usuarios.Remove(usuario);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool UsuarioExists(int id)
         {
-          return (_context.Usuarios?.Any(e => e.UsuarioId == id)).GetValueOrDefault();
+            return (_context.Usuarios?.Any(e => e.UsuarioId == id)).GetValueOrDefault();
         }
     }
 }
