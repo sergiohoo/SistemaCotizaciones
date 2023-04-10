@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaCotizaciones.Model;
 
@@ -11,9 +12,10 @@ using SistemaCotizaciones.Model;
 namespace SistemaCotizaciones.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230410041633_AgregaTotalNeto")]
+    partial class AgregaTotalNeto
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -245,12 +247,6 @@ namespace SistemaCotizaciones.Migrations
                     b.Property<int>("TipoCotizacionId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TotalIVA")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalNeto")
-                        .HasColumnType("int");
-
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
@@ -355,7 +351,7 @@ namespace SistemaCotizaciones.Migrations
                     b.Property<DateTime?>("FechaTermino")
                         .HasColumnType("datetime2");
 
-                    b.Property<double?>("ImpuestoDuty")
+                    b.Property<double>("ImpuestoDuty")
                         .HasColumnType("float");
 
                     b.Property<int?>("MaterialId")
@@ -465,19 +461,11 @@ namespace SistemaCotizaciones.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NombreUsuario")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Telefono")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

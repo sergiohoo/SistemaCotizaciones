@@ -18,10 +18,16 @@ namespace SistemaCotizaciones.Model
 
         [Display(Name = "Precio unitario")]
         public int? PrecioUnitario { get; set; }
+        [Display(Name = "Precio cliente")]
+        public int? PrecioCliente { get; set; }
+        [Display(Name = "Total neto")]
+        public int? TotalNeto { get; set; }
         [Display(Name = "Descuento [%]")]
         public double? DescuentoPorcentaje { get; set; }
         [Display(Name = "Descuento [$]")]
         public int? DescuentoAbsoluto { get; set; }
+        [Display(Name = "Impuesto/Duty")]
+        public double? ImpuestoDuty { get; set; }
         [Display(Name = "Fecha inicio")]
         public DateTime? FechaInicio { get; set; }
         [Display(Name = "Fecha término")]

@@ -14,6 +14,12 @@ namespace SistemaCotizaciones.Model
         [Display(Name = "Apellido")]
         [Required(ErrorMessage = "El apellido es obligatorio")]
         public string Apellido { get; set; }
+        [Display(Name = "Email")]
+        [Required(ErrorMessage = "El correo electrónico es obligatorio")]
+        public string Email { get; set; }
+        [Display(Name = "Teléfono")]
+        [Required(ErrorMessage = "El teléfono es obligatorio")]
+        public string Telefono { get; set; }
         [Display(Name = "Contraseña")]
         [Required(ErrorMessage = "La contraseña es obligatoria")]
         public string Contraseña { get; set; }

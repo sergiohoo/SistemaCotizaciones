@@ -36,10 +36,10 @@ namespace SistemaCotizaciones.Model
         public int CanalId { get; set; }
         [Display(Name = "Canal")]
         public Canal? Canal { get; set; }
-        [Display(Name = "Contacto cliente final")]
+        [Display(Name = "Contacto canal")]
         [Required(ErrorMessage = "Debe seleccionar un contacto de canal")]
         public int ContactoCanalId { get; set; }
-        [Display(Name = "Contacto cliente final")]
+        [Display(Name = "Contacto canal")]
         public ContactoCanal? ContactoCanal { get; set; }
         [Display(Name = "Cliente final")]
         [Required(ErrorMessage = "Debe seleccionar un cliente final")]
@@ -51,17 +51,16 @@ namespace SistemaCotizaciones.Model
         public int ContactoClienteFinalId { get; set; }
         [Display(Name = "Contacto cliente final")]
         public ContactoClienteFinal? ContactoClienteFinal { get; set; }
-        [Display(Name = "Duty")]
-        [Required(ErrorMessage = "El duty es obligatorio")]
-        public double Duty { get; set; }
-        [Display(Name = "Impuesto")]
-        [Required(ErrorMessage = "El impuesto es obligatorio")]
-        public double Impuesto { get; set; }
         [Display(Name = "Margen")]
         [Required(ErrorMessage = "El margen es obligatorio")]
         public double Margen { get; set; }
         [Display(Name = "Observaciones")]
         public string Observaciones { get; set; }
+        [Display(Name = "Total neto")]
+        public int TotalNeto { get; set; }
+        [Display(Name = "Total con IVA")]
+        public int TotalIVA { get; set; }
+
         public List<MaterialCotizacion>? MaterialesCotizacion { get; set; }
 
     }

@@ -23,9 +23,12 @@
         <span asp-validation-for="Descripcion" class="text-danger"></span>
     </div>
     <div class="form-group col-md-3 col-sm-12">
-        <label asp-for="Sku" class="control-label"></label>
-        <input asp-for="Sku" class="form-control" />
-        <span asp-validation-for="Sku" class="text-danger"></span>
+        <label asp-for="TipoMaterial" class="control-label"></label>
+        <select asp-for="TipoMaterial" class="form-control" required>
+            <option value="">Seleccione tipo</option>
+            <option value="SW">Software</option>
+            <option value="HW">Hardware</option>
+        </select>
     </div>
     <div class="form-group col-md-3 col-sm-12">
         <label asp-for="NumeroSerie" class="control-label"></label>

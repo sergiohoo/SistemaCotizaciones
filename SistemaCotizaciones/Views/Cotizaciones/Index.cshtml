@@ -29,25 +29,27 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Usuario.NombreUsuario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quote.NumeroQuote)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Canal.RazonSocial)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClienteFinal.RazonSocial)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.CotizacionId"><i class="fa-solid fa-pen-to-square"></i></a> |
-                <a asp-action="Delete" asp-route-id="@item.CotizacionId"><i class="fa-solid fa-trash"></i></a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Usuario.NombreUsuario)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quote.NumeroQuote)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Canal.RazonSocial)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ClienteFinal.RazonSocial)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.CotizacionId"><i class="fa-solid fa-pen-to-square"></i></a> |
+                    <a asp-action="Delete" asp-route-id="@item.CotizacionId"><i class="fa-solid fa-trash"></i></a> |
+                    <a asp-action="Excel" asp-route-id="@item.CotizacionId" target="_blank"><i class="fas fa-file-excel"></i></a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

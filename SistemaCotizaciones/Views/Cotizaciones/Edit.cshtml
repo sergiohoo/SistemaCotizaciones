@@ -1,92 +1,246 @@
-﻿@model SistemaCotizaciones.Model.Cotizacion
+﻿@model CotizacionCreateViewModel
 
 @{
     ViewData["Title"] = "Modificar";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Modificar</h2>
+<style>
+    .visible {
+        display: table-row;
+    }
 
-<h4>Cotizacion</h4>
+    .oculta {
+        display: none;
+    }
+
+    .form-control {
+        font-size: smaller;
+        height: calc(1.5em + .75rem + 2px);
+    }
+
+
+    .dropdown-menu {
+        padding: 0px 1px !important;
+        margin: 0px !important;
+        font-size: small;
+    }
+
+    .filter-option-inner {
+        padding: 0px 1px !important;
+        margin: 0px !important;
+        font-size: smaller;
+    }
+
+    .bs-placeholder, .dropdown-toggle {
+        color: #495057 !important;
+        border: 1px solid #ced4da;
+        height: calc(1.5em + .5rem + 2px);
+        background-color: #fff;
+    }
+
+    #tablaMateriales tr, #tablaMateriales td, #tablaMateriales th {
+        padding: 0;
+    }
+
+    #tablaMateriales input[type='number'] {
+        text-align: right;
+    }
+
+    #tablaMateriales input, #tablaMateriales select {
+        padding: 0px 1px !important;
+        margin: 0px !important;
+        height: calc(1em + .5rem + 2px);
+        font-size: small;
+    }
+
+    #tablaMateriales .bs-placeholder, #tablaMateriales .dropdown-toggle {
+        padding: 0px 1px !important;
+        margin: 0px !important;
+        color: #495057 !important;
+        border: 1px solid #ced4da;
+        height: calc(1em + .35rem);
+        background-color: #fff;
+        max-width: 300px;
+    }
+
+    #tablaMateriales .bootstrap-select, #tablaMateriales .td-selectpicker {
+        max-width: 300px !important;
+    }
+</style>
+
+<h2>Modificar cotización</h2>
+
 <hr />
 <form asp-action="Edit" class="row">
+    <input type="hidden" asp-for="Cotizacion.CotizacionId" />
+    <input type="hidden" asp-for="Quote.QuoteId" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <input type="hidden" asp-for="CotizacionId" />
-    <div class="form-group col-md-2 col-sm-12">
-        <label asp-for="UsuarioId" class="control-label"></label>
-        <select asp-for="UsuarioId" class="form-control" asp-items="ViewBag.UsuarioId">
-            <option value="">Seleccione usuario</option>
-        </select>
+
+    <div class="col-md-4 col-sm-12">
+        <div class="row p-0">
+            <div class="form-group col-md-6 col-sm-12">
+                <label asp-for="Quote.NumeroQuote" class="control-label"></label>
+                <input asp-for="Quote.NumeroQuote" required class="form-control" />
+                <span asp-validation-for="Quote.NumeroQuote" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-6 col-sm-12">
+                <label asp-for="Quote.FechaEmision" class="control-label"></label>
+                <input type="date" asp-for="Quote.FechaEmision" required class="form-control" />
+                <span asp-validation-for="Quote.FechaEmision" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-12 col-sm-12">
+                <label asp-for="Quote.FabricanteId" class="control-label"></label>
+                <select asp-for="Quote.FabricanteId" required class="form-control selectpicker" data-live-search="true" asp-items="ViewBag.FabricanteId">
+                    <option value="">Seleccione fabricante</option>
+                </select>
+            </div>
+            <div class="form-group col-md-12 col-sm-12">
+                <label asp-for="Quote.ContactoFabricanteId" class="control-label"></label>
+                <select asp-for="Quote.ContactoFabricanteId" required class="form-control selectpicker" data-live-search="true" asp-items="ViewBag.ContactoFabricanteId">
+                    <option value="">Seleccione contacto</option>
+                </select>
+            </div>
+            <div class="form-group col-md-12 col-sm-12">
+                <label asp-for="Quote.NombreOportunidad" class="control-label"></label>
+                <input asp-for="Quote.NombreOportunidad" required class="form-control" />
+                <span asp-validation-for="Quote.NombreOportunidad" class="text-danger"></span>
+            </div>
+        </div>
     </div>
-    <div class="form-group col-md-3 col-sm-12">
-        <label asp-for="FabricanteId" class="control-label"></label>
-        <select asp-for="FabricanteId" class="form-control" asp-items="ViewBag.FabricanteId">
-            <option value="">Seleccione fabricante</option>
-        </select>
+    <div class="col-md-8 col-sm-12">
+        <div class="row p-0">
+            <div class="form-group col-md-4 col-sm-12">
+                <label asp-for="Cotizacion.UsuarioId" class="control-label"></label>
+                <select asp-for="Cotizacion.UsuarioId" required class="form-control" asp-items="ViewBag.UsuarioId">
+                    <option value="">Seleccione usuario</option>
+                </select>
+            </div>
+            <div class="form-group col-md-4 col-sm-12">
+                <label asp-for="Cotizacion.TipoCotizacionId" class="control-label"></label>
+                <select asp-for="Cotizacion.TipoCotizacionId" required class="form-control" asp-items="ViewBag.TipoCotizacionId">
+                    <option value="">Seleccione tipo de cotización</option>
+                </select>
+            </div>
+            <div class="form-group col-md-4 col-sm-12">
+                <label asp-for="Cotizacion.TipoCompraId" class="control-label"></label>
+                <select asp-for="Cotizacion.TipoCompraId" required class="form-control" asp-items="ViewBag.TipoCompraId">
+                    <option value="">Seleccione tipo de compra</option>
+                </select>
+            </div>
+            <hr />
+            <div class="form-group col-md-6 col-sm-12">
+                <label asp-for="Cotizacion.CanalId" class="control-label"></label>
+                <select asp-for="Cotizacion.CanalId" required class="form-control selectpicker" data-live-search="true" asp-items="ViewBag.CanalId">
+                    <option value="">Seleccione canal</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6 col-sm-12">
+                <label asp-for="Cotizacion.ClienteFinalId" class="control-label"></label>
+                <select asp-for="Cotizacion.ClienteFinalId" required class="form-control selectpicker" data-live-search="true" asp-items="ViewBag.ClienteFinalId">
+                    <option value="">Seleccione cliente final</option>
+                </select>
+            </div>
+            <div class="form-group col-md-6 col-sm-12">
+                <label asp-for="Cotizacion.ContactoCanalId" class="control-label"></label>
+                <select asp-for="Cotizacion.ContactoCanalId" required class="form-control selectpicker" data-live-search="true" asp-items="ViewBag.ContactoCanalId">
+                    <option value="">Seleccione contacto</option>
+                </select>
+            </div>
+            <hr />
+            <div class="form-group col-md-6 col-sm-12">
+                <label asp-for="Cotizacion.ContactoClienteFinalId" class="control-label"></label>
+                <select asp-for="Cotizacion.ContactoClienteFinalId" required class="form-control selectpicker" data-live-search="true" asp-items="ViewBag.ContactoClienteFinalId">
+                    <option value="">Seleccione contacto</option>
+                </select>
+            </div>
+            <div class="form-group col-md-2 col-sm-12">
+                <label asp-for="Cotizacion.Margen" class="control-label"></label>
+                <input asp-for="Cotizacion.Margen" required class="form-control" />
+                <span asp-validation-for="Cotizacion.Margen" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-10 col-sm-12">
+                <label asp-for="Cotizacion.Observaciones" class="control-label"></label>
+                <textarea asp-for="Cotizacion.Observaciones" required class="form-control"></textarea>
+                <span asp-validation-for="Cotizacion.Observaciones" class="text-danger"></span>
+            </div>
+        </div>
     </div>
-    <div class="form-group col-md-3 col-sm-12">
-        <label asp-for="QuoteId" class="control-label"></label>
-        <select asp-for="QuoteId" class="form-control" asp-items="ViewBag.QuoteId">
-            <option value="">Seleccione número de quote</option>
-        </select>
+
+    <div class="col-md-12 col-sm-12">
+        <table id="tablaMateriales" class="table table-condensed table-striped table-bordered small">
+            <tr>
+                <th></th>
+                <th>MATERIAL</th>
+                <th class="text-right">CANTIDAD</th>
+                <th class ="text-right">PRECIO [$]</th>
+                <th class="text-right">DESC [%]</th>
+                <th class="text-right">IMP/DUTY [%]</th>
+                <th class="text-right">CLIENTE [$]</th>
+                <th class="text-center">INICIO</th>
+                <th class="text-center">TÉRMINO</th>
+                <th class="text-right">TOTAL NETO</th>
+            </tr>
+            @{
+                var nCotizaciones = Model.Cotizacion.MaterialesCotizacion.Where(c => c.TotalNeto != null).ToList().Count;
+
+                for (int i = 1; i <= nCotizaciones; i++)
+                {
+                    <tr id="tr_@i" class="visible">
+                        <input type="hidden" asp-for="Cotizacion.MaterialesCotizacion[i-1].MaterialCotizacionId" />
+                        <td class="text-right">@i</td>
+                        <td class="td-selectpicker">
+                            <select asp-for="Cotizacion.MaterialesCotizacion[i-1].MaterialId" class="form-control small selectpicker mMaterial" data-live-search="true" asp-items="ViewBag.Materiales">
+                                <option value="">Seleccione</option>
+                            </select>
+                        </td>
+                        <td><input type="number" min="0" step="1" asp-for="Cotizacion.MaterialesCotizacion[i-1].Cantidad" class="form-control small mCantidad" /></td>
+                        <td><input type="number" min="0" step="1" asp-for="Cotizacion.MaterialesCotizacion[i-1].PrecioUnitario" class="form-control small mPrecioUnitario" /></td>
+                        <td><input type="number" min="0" step="1" asp-for="Cotizacion.MaterialesCotizacion[i-1].DescuentoPorcentaje" class="form-control small mDescuento" /></td>
+                        <td><input type="number" min="0" step="1" asp-for="Cotizacion.MaterialesCotizacion[i-1].ImpuestoDuty" class="form-control small mImpuesto" /></td>
+                        <td><input type="number" min="0" step="1" asp-for="Cotizacion.MaterialesCotizacion[i-1].PrecioCliente" readonly class="form-control small mPrecioCliente" /></td>
+                        <td><input type="date" asp-for="Cotizacion.MaterialesCotizacion[i-1].FechaInicio" class="form-control small" /></td>
+                        <td><input type="date" asp-for="Cotizacion.MaterialesCotizacion[i-1].FechaTermino" class="form-control small" /></td>
+                        <td><input type="number" min="0" step="1" asp-for="Cotizacion.MaterialesCotizacion[i-1].TotalNeto" readonly class="form-control small mTotalNeto text-primary" /></td>
+                    </tr>
+                }
+                for (int i = nCotizaciones + 1; i < 100; i++)
+                {
+                    <tr id="tr_@i" class="oculta">
+                        <td class="text-right">@i</td>
+                        <td class="td-selectpicker">
+                            <select asp-for="Cotizacion.MaterialesCotizacion[i-1].MaterialId" class="form-control small selectpicker mMaterial" data-live-search="true" asp-items="ViewBag.Materiales">
+                                <option value="">Seleccione</option>
+                            </select>
+                        </td>
+                        <td><input type="number" min="0" step="1" asp-for="Cotizacion.MaterialesCotizacion[i-1].Cantidad" class="form-control small mCantidad" /></td>
+                        <td><input type="number" min="0" step="1" asp-for="Cotizacion.MaterialesCotizacion[i-1].PrecioUnitario" class="form-control small mPrecioUnitario" /></td>
+                        <td><input type="number" min="0" step="1" asp-for="Cotizacion.MaterialesCotizacion[i-1].DescuentoPorcentaje" class="form-control small mDescuento" /></td>
+                        <td><input type="number" min="0" step="1" asp-for="Cotizacion.MaterialesCotizacion[i-1].ImpuestoDuty" class="form-control small mImpuesto" /></td>
+                        <td><input type="number" min="0" step="1" asp-for="Cotizacion.MaterialesCotizacion[i-1].PrecioCliente" readonly class="form-control small mPrecioCliente" /></td>
+                        <td><input type="date" asp-for="Cotizacion.MaterialesCotizacion[i-1].FechaInicio" class="form-control small" /></td>
+                        <td><input type="date" asp-for="Cotizacion.MaterialesCotizacion[i-1].FechaTermino" class="form-control small" /></td>
+                        <td><input type="number" min="0" step="1" asp-for="Cotizacion.MaterialesCotizacion[i-1].TotalNeto" readonly class="form-control small mTotalNeto text-primary" /></td>
+                    </tr>
+                }
+            }
+            <tr>
+                <td colspan="10" class="text-right">
+                    <button type="button" class="btn btn-success" onclick="addRow();"><i class="fas fa-plus-circle"></i></button>
+                </td>
+            </tr>
+        </table>
     </div>
-    <div class="form-group col-md-2 col-sm-12">
-        <label asp-for="TipoCotizacionId" class="control-label"></label>
-        <select asp-for="TipoCotizacionId" class="form-control" asp-items="ViewBag.TipoCotizacionId">
-            <option value="">Seleccione tipo de cotización</option>
-        </select>
+
+    <div class="form-group col-md-2 offset-md-10 col-sm-12 text-right">
+        <label asp-for="Cotizacion.TotalNeto" class="control-label"></label>
+        <input asp-for="Cotizacion.TotalNeto" readonly class="form-control text-primary text-right p-1" />
     </div>
-    <div class="form-group col-md-2 col-sm-12">
-        <label asp-for="TipoCompraId" class="control-label"></label>
-        <select asp-for="TipoCompraId" class="form-control" asp-items="ViewBag.TipoCompraId">
-            <option value="">Seleccione tipo de compra</option>
-        </select>
+    <div class="form-group col-md-2 offset-md-10 col-sm-12 text-right">
+        <label asp-for="Cotizacion.TotalIVA" class="control-label"></label>
+        <input asp-for="Cotizacion.TotalIVA" readonly class="form-control text-success text-right p-1" />
     </div>
-    <hr />
-    <div class="form-group col-md-3 col-sm-12">
-        <label asp-for="CanalId" class="control-label"></label>
-        <select asp-for="CanalId" class="form-control" asp-items="ViewBag.CanalId">
-            <option value="">Seleccione canal</option>
-        </select>
-    </div>
-    <div class="form-group col-md-3 col-sm-12">
-        <label asp-for="ContactoCanalId" class="control-label"></label>
-        <select asp-for="ContactoCanalId" class="form-control" asp-items="ViewBag.ContactoCanalId">
-            <option value="">Seleccione contacto de canal</option>
-        </select>
-    </div>
-    <div class="form-group col-md-3 col-sm-12">
-        <label asp-for="ClienteFinalId" class="control-label"></label>
-        <select asp-for="ClienteFinalId" class="form-control" asp-items="ViewBag.ClienteFinalId">
-            <option value="">Seleccione cliente final</option>
-        </select>
-    </div>
-    <div class="form-group col-md-3 col-sm-12">
-        <label asp-for="ContactoClienteFinalId" class="control-label"></label>
-        <select asp-for="ContactoClienteFinalId" class="form-control" asp-items="ViewBag.ContactoClienteFinalId">
-            <option value="">Seleccione contacto cliente final</option>
-        </select>
-    </div>
-    <div class="form-group col-md-2 col-sm-12">
-        <label asp-for="Duty" class="control-label"></label>
-        <input asp-for="Duty" class="form-control" />
-        <span asp-validation-for="Duty" class="text-danger"></span>
-    </div>
-    <div class="form-group col-md-2 col-sm-12">
-        <label asp-for="Impuesto" class="control-label"></label>
-        <input asp-for="Impuesto" class="form-control" />
-        <span asp-validation-for="Impuesto" class="text-danger"></span>
-    </div>
-    <div class="form-group col-md-2 col-sm-12">
-        <label asp-for="Margen" class="control-label"></label>
-        <input asp-for="Margen" class="form-control" />
-        <span asp-validation-for="Margen" class="text-danger"></span>
-    </div>
-    <div class="form-group col-md-6 col-sm-12">
-        <label asp-for="Observaciones" class="control-label"></label>
-        <textarea asp-for="Observaciones" class="form-control"></textarea>
-        <span asp-validation-for="Observaciones" class="text-danger"></span>
-    </div>
+
     <div class="form-group col-md-12 col-sm-12 text-right">
         <input type="submit" value="Guardar" class="btn btn-primary" />
     </div>
@@ -103,22 +257,119 @@
 }
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-
 <script>
+
+    function CalculaTotales() {
+        var total = 0;
+        for (i = 1; i < 100; i++) {
+            var tr = $("#tr_" + i);
+            if (tr.find(".mTotalNeto").val() != "") {
+                total = total + parseInt(tr.find(".mTotalNeto").val());
+            }
+        }
+        console.log(total);
+        $("#Cotizacion_TotalNeto").val(total);
+        $("#Cotizacion_TotalIVA").val(Math.round(total * 1.19));
+    }
+
+    function CalculaPrecio(rowId) {
+
+        var tr = $("#tr_" + rowId);
+        var tipo = tr.find(".mMaterial option:selected").text().split("|")[0].trim();
+        var cantidad = parseInt(tr.find(".mCantidad").val());
+        var precioUnitario = parseInt(tr.find(".mPrecioUnitario").val());
+        var descuento = parseInt(tr.find(".mDescuento").val());
+        var impuesto = parseInt(tr.find(".mImpuesto").val());
+
+        var margen = $("#Cotizacion_Margen").val();
+
+        if (tipo != "") {
+            var precioCliente = 0;
+            var totalNeto = 0;
+
+            var precioFoB = precioUnitario * (1 - descuento / 100);
+
+            var precioInternacion = 0;
+            if (tipo == "SW") {
+                precioInternacion = precioFoB * (1 + impuesto / 100);
+            }
+            else if (tipo == "HW") {
+                precioInternacion = precioFoB / (1 - impuesto / 100);
+            }
+
+            precioCliente = Math.round(precioInternacion * (1 + margen / 100));
+
+            totalNeto = precioCliente * cantidad;
+
+            if (precioCliente > 0 && totalNeto > 0) {
+                tr.find(".mPrecioCliente").val(precioCliente);
+                tr.find(".mTotalNeto").val(totalNeto);
+            }
+        }
+
+        CalculaTotales();
+    }
+
+    $(".mMaterial").on("change", function () {
+        var id = $(this).attr("id").split("_")[2];
+        CalculaPrecio(parseInt(id) + 1);
+    }
+    );
+
+    $(".mCantidad").on("change", function () {
+        var id = $(this).attr("id").split("_")[2];
+        CalculaPrecio(parseInt(id) + 1);
+    }
+    );
+
+    $(".mPrecioUnitario").on("change", function () {
+        var id = $(this).attr("id").split("_")[2];
+        CalculaPrecio(parseInt(id) + 1);
+    }
+    );
+
+    $(".mDescuento").on("change", function () {
+        var id = $(this).attr("id").split("_")[2];
+        CalculaPrecio(parseInt(id) + 1);
+    }
+    );
+
+    $(".mImpuesto").on("change", function () {
+        var id = $(this).attr("id").split("_")[2];
+        CalculaPrecio(parseInt(id) + 1);
+    }
+    );
+
+    $("#Cotizacion_Margen").on("change", function () {
+        for (i = 1; i < 100; i++) {
+            CalculaPrecio(i);
+        }
+    }
+    );
+
+
+    function addRow() {
+        var last = $("#tablaMateriales").find("tr.visible").last().next().addClass("visible").removeClass("oculta");
+        console.log(last);
+    }
+
     $(function () {
-        $("#CanalId").on("change", function () {
-            var canalId = $(this).val();
-            $("#ContactoCanalId").empty();
-            $("#ContactoCanalId").append("<option value=''>Seleccione contacto</option>");
+        $("#Quote_FabricanteId").on("change", function () {
+            var fabricanteId = $(this).val();
+            $("#Quote_ContactoFabricanteId").empty();
+            $("#Quote_ContactoFabricanteId").append("<option value=''>Seleccione contacto</option>");
 
             $.ajax({
-                url: "/Cotizaciones/GetContactosCanal",
+                url: "/Cotizaciones/GetContactosFabricante",
                 type: "GET",
-                data: "canalId=" + canalId,
+                data: "fabricanteId=" + fabricanteId,
                 success: function (data) {
                     $.each(data, function (i, item) {
-                        $("#ContactoCanalId").append(`<option value="${item.contactoCanalId}">${item.nombre} ${item.apellido}</option>`);
+                        $("#Quote_ContactoFabricanteId").append(`<option value="${item.contactoFabricanteId}">${item.nombre} ${item.apellido}</option>`);
                     });
+                    $('#Quote_ContactoFabricanteId').addClass('selectpicker');
+                    $('#Quote_ContactoFabricanteId').attr('data-live-search', 'true');
+                    $('#Quote_ContactoFabricanteId').selectpicker('refresh');
                 },
                 error: function (error) {
                 }
@@ -127,10 +378,34 @@
     });
 
     $(function () {
-        $("#ClienteFinalId").on("change", function () {
+        $("#Cotizacion_CanalId").on("change", function () {
+            var canalId = $(this).val();
+            $("#Cotizacion_ContactoCanalId").empty();
+            $("#Cotizacion_ContactoCanalId").append("<option value=''>Seleccione contacto</option>");
+
+            $.ajax({
+                url: "/Cotizaciones/GetContactosCanal",
+                type: "GET",
+                data: "canalId=" + canalId,
+                success: function (data) {
+                    $.each(data, function (i, item) {
+                        $("#Cotizacion_ContactoCanalId").append(`<option value="${item.contactoCanalId}">${item.nombre} ${item.apellido}</option>`);
+                    });
+                    $('#Cotizacion_ContactoCanalId').addClass('selectpicker');
+                    $('#Cotizacion_ContactoCanalId').attr('data-live-search', 'true');
+                    $('#Cotizacion_ContactoCanalId').selectpicker('refresh');
+                },
+                error: function (error) {
+                }
+            });
+        });
+    });
+
+    $(function () {
+        $("#Cotizacion_ClienteFinalId").on("change", function () {
             var clienteId = $(this).val();
-            $("#ContactoClienteFinalId").empty();
-            $("#ContactoClienteFinalId").append("<option value=''>Seleccione contacto</option>");
+            $("#Cotizacion_ContactoClienteFinalId").empty();
+            $("#Cotizacion_ContactoClienteFinalId").append("<option value=''>Seleccione contacto</option>");
 
             $.ajax({
                 url: "/Cotizaciones/GetContactosClienteFinal",
@@ -138,12 +413,19 @@
                 data: "clienteId=" + clienteId,
                 success: function (data) {
                     $.each(data, function (i, item) {
-                        $("#ContactoClienteFinalId").append(`<option value="${item.contactoClienteFinalId}">${item.nombre} ${item.apellido}</option>`);
+                        $("#Cotizacion_ContactoClienteFinalId").append(`<option value="${item.contactoClienteFinalId}">${item.nombre} ${item.apellido}</option>`);
                     });
+                    $('#Cotizacion_ContactoClienteFinalId').addClass('selectpicker');
+                    $('#Cotizacion_ContactoClienteFinalId').attr('data-live-search', 'true');
+                    $('#Cotizacion_ContactoClienteFinalId').selectpicker('refresh');
                 },
                 error: function (error) {
                 }
             });
         });
+    });
+
+    $(document).ready(function () {
+        $('.selectpicker').selectpicker();
     });
 </script>
