@@ -20,6 +20,9 @@ namespace SistemaCotizaciones.Model
         [Display(Name = "Teléfono")]
         [Required(ErrorMessage = "El teléfono es obligatorio")]
         public string Telefono { get; set; }
+        [Display(Name = "Cargo")]
+        public string? Cargo { get; set; }
+
         [Display(Name = "Contraseña")]
         [Required(ErrorMessage = "La contraseña es obligatoria")]
         public string Contraseña { get; set; }

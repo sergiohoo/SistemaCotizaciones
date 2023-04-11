@@ -79,14 +79,17 @@ namespace SistemaCotizaciones.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UsuarioId,NombreUsuario,Nombre,Apellido,Email,Telefono,Contraseña")] Usuario usuario)
+        public async Task<IActionResult> Create(Usuario usuario)
         {
-            if (ModelState.IsValid)
+            var usuarioAnterior = _context.Usuarios.FirstOrDefault();
+            if(usuarioAnterior != null)
             {
-                _context.Add(usuario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                usuario.Contraseña = usuarioAnterior.Contraseña;
             }
+            _context.Add(usuario);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
             return View(usuario);
         }
 
@@ -111,7 +114,7 @@ namespace SistemaCotizaciones.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UsuarioId,NombreUsuario,Nombre,Apellido,Email,Telefono,Contraseña")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("UsuarioId,NombreUsuario,Nombre,Apellido,Email,Telefono,Cargo,Contraseña")] Usuario usuario)
         {
             if (id != usuario.UsuarioId)
             {
