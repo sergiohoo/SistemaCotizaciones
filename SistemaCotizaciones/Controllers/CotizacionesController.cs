@@ -79,7 +79,7 @@ namespace SistemaCotizaciones.Controllers
         // GET: Cotizaciones
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Cotizaciones.Include(c => c.Canal).Include(c => c.ClienteFinal).Include(c => c.ContactoCanal).Include(c => c.ContactoClienteFinal).Include(c => c.Fabricante).Include(c => c.Quote).Include(c => c.TipoCompra).Include(c => c.TipoCotizacion).Include(c => c.Usuario);
+            var applicationDbContext = _context.Cotizaciones.Include(c => c.Canal).Include(c => c.ClienteFinal).Include(c => c.ContactoCanal).Include(c => c.ContactoClienteFinal).Include(c => c.Fabricante).Include(c => c.Quote).Include(c => c.TipoCompra).Include(c => c.TipoCotizacion).Include(c => c.Usuario).OrderByDescending(c => c.CotizacionId);
             return View(await applicationDbContext.ToListAsync());
         }
 
