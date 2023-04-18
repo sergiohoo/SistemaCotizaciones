@@ -12,14 +12,9 @@ namespace SistemaCotizaciones.Model
         [Display(Name ="Descripción")]
         [Required(ErrorMessage = "La descripción es obligatoria")]
         public string? Descripcion { get; set; }
-        [Display(Name = "Número de serie")]
-        [Required(ErrorMessage = "El número de serie es obligatorio")]
-        public string? NumeroSerie { get; set; }
         [Display(Name = "Código impulse")]
         public string? CodigoImpulse { get; set; }
         [Display(Name = "Precio unitario")]
         public int? PrecioUnitario { get; set; }
-        [Display(Name = "Tipo de material")]
-        public string TipoMaterial { get; set; }
     }
 }

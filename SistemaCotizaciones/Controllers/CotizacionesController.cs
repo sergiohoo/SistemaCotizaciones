@@ -21,12 +21,29 @@ namespace SistemaCotizaciones.Controllers
 
         public IActionResult MaterialDelete(int id,int idCotizacion)
         {
-            var material = _context.MaterialesCotizacion.Where(m => m.CotizacionId == idCotizacion && m.MaterialCotizacionId == id).FirstOrDefault();
-            if(material != null)
+            var materialDelete = _context.MaterialesCotizacion.Where(m => m.CotizacionId == idCotizacion && m.MaterialCotizacionId == id).FirstOrDefault();
+            if(materialDelete != null)
             {
-                _context.Remove(material);
+                _context.Remove(materialDelete);
                 _context.SaveChanges();
             }
+
+            var cotizacion = _context.Cotizaciones.Where(c => c.CotizacionId == idCotizacion).FirstOrDefault();
+            var materiales = _context.MaterialesCotizacion.Where(m => m.CotizacionId == idCotizacion).ToList();
+            decimal totalNeto = 0;
+            decimal totalIva = 0;
+            foreach (var material in materiales)
+            {
+                totalNeto += material.TotalNeto ?? 0;
+            }
+            totalIva = totalNeto * (1 + 19 / 100);
+
+            cotizacion.TotalNeto = totalNeto;
+            cotizacion.TotalIVA = totalIva;
+
+            _context.Update(cotizacion);
+            _context.SaveChanges();
+
             return RedirectToAction(nameof(Edit), new { id = idCotizacion });
         }
 
@@ -97,7 +114,7 @@ namespace SistemaCotizaciones.Controllers
             var selectListMateriales = new List<SelectListItem>();
             foreach (var material in listaMateriales)
             {
-                var texto = material.TipoMaterial + " | " + material.Nombre + " | " + material.NumeroSerie + " | " + material.Descripcion;
+                var texto = material.Nombre + " | " + material.Descripcion;
 
                 var itemMaterial = new SelectListItem
                 {
@@ -113,7 +130,7 @@ namespace SistemaCotizaciones.Controllers
 
             var cotizacion = new Cotizacion();
             var materiales = new List<MaterialCotizacion>();
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 90; i++)
             {
                 var material = new MaterialCotizacion
                 {
@@ -149,11 +166,13 @@ namespace SistemaCotizaciones.Controllers
         {
             if(cotizacion != null && quote != null)
             {
+                quote.Vigencia = true;
                 _context.Add(quote);
                 await _context.SaveChangesAsync();
 
                 cotizacion.QuoteId = quote.QuoteId;
                 cotizacion.FabricanteId = quote.FabricanteId;
+                cotizacion.Version = 1;
 
                 var materialesCotizacion = new List<MaterialCotizacion>();
 
@@ -187,6 +206,54 @@ namespace SistemaCotizaciones.Controllers
             return View(cotizacion);
         }
 
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> GuardaVersion(Cotizacion cotizacion, Quote quote)
+        {
+            if (cotizacion != null && quote != null)
+            {
+                _context.Update(quote);
+                await _context.SaveChangesAsync();
+
+                cotizacion.QuoteId = quote.QuoteId;
+                cotizacion.FabricanteId = quote.FabricanteId;
+
+                var anteriores = _context.Cotizaciones.Where(c => c.QuoteId == quote.QuoteId).OrderByDescending(c => c.Version).FirstOrDefault();
+
+                cotizacion.Version = anteriores.Version + 1;
+
+                var materialesCotizacion = new List<MaterialCotizacion>();
+
+                foreach (var material in cotizacion.MaterialesCotizacion)
+                {
+                    if (material.Cantidad != null && material.Cantidad > 0)
+                    {
+                        material.CotizacionId = cotizacion.CotizacionId;
+                        materialesCotizacion.Add(material);
+                    }
+                }
+
+                cotizacion.MaterialesCotizacion = materialesCotizacion;
+
+                _context.Add(cotizacion);
+                await _context.SaveChangesAsync();
+
+
+                return RedirectToAction(nameof(Index));
+            }
+
+            ViewData["CanalId"] = new SelectList(_context.Canales, "CanalId", nameof(Canal.RazonSocial), cotizacion.CanalId);
+            ViewData["ContactoCanalId"] = new SelectList(_context.ContactosCanales.Where(c => c.CanalId == cotizacion.CanalId), "ContactoCanalId", nameof(ContactoCanal.Nombre), cotizacion.ContactoCanalId);
+            ViewData["ClienteFinalId"] = new SelectList(_context.ClientesFinales, "ClienteFinalId", nameof(ClienteFinal.RazonSocial), cotizacion.ClienteFinalId);
+            ViewData["ContactoClienteFinalId"] = new SelectList(_context.ContactosClientesFinales.Where(c => c.ClienteFinalId == cotizacion.ClienteFinalId), "ContactoClienteFinalId", nameof(ContactoClienteFinal.Nombre), cotizacion.ContactoClienteFinalId);
+            ViewData["FabricanteId"] = new SelectList(_context.Fabricantes, "FabricanteId", nameof(Fabricante.Nombre), cotizacion.FabricanteId);
+            ViewData["QuoteId"] = new SelectList(_context.Quotes, "QuoteId", nameof(Quote.NumeroQuote), cotizacion.QuoteId);
+            ViewData["TipoCompraId"] = new SelectList(_context.TiposCompra, "TipoCompraId", nameof(TipoCompra.Nombre), cotizacion.TipoCompraId);
+            ViewData["TipoCotizacionId"] = new SelectList(_context.TiposCotizacion, "TipoCotizacionId", nameof(TipoCotizacion.Nombre), cotizacion.TipoCotizacionId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", nameof(Usuario.NombreUsuario), cotizacion.UsuarioId);
+            return View(cotizacion);
+        }
+
         // GET: Cotizaciones/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -196,6 +263,7 @@ namespace SistemaCotizaciones.Controllers
             }
 
             var cotizacion = await _context.Cotizaciones.Where(c => c.CotizacionId == id).Include(c => c.MaterialesCotizacion).ThenInclude(m => m.Material).FirstOrDefaultAsync();
+            
             var quote = await _context.Quotes.Where(q => q.QuoteId == cotizacion.QuoteId).FirstOrDefaultAsync();
             if (cotizacion == null || quote == null)
             {
@@ -216,7 +284,7 @@ namespace SistemaCotizaciones.Controllers
             var selectListMateriales = new List<SelectListItem>();
             foreach (var material in listaMateriales)
             {
-                var texto = material.TipoMaterial + " | " + material.Nombre + " | " + material.NumeroSerie + " | " + material.Descripcion;
+                var texto = material.Nombre + " | " + material.Descripcion;
 
                 var itemMaterial = new SelectListItem
                 {
@@ -236,7 +304,7 @@ namespace SistemaCotizaciones.Controllers
                 materiales.Add(material);
             }
 
-            for (int i = 0; i < 100 - cotizacion.MaterialesCotizacion.Count; i++)
+            for (int i = 0; i < 90 - cotizacion.MaterialesCotizacion.Count; i++)
             {
                 var material = new MaterialCotizacion
                 {
@@ -321,7 +389,7 @@ namespace SistemaCotizaciones.Controllers
             var selectListMateriales = new List<SelectListItem>();
             foreach (var material in listaMateriales)
             {
-                var texto = material.TipoMaterial + " | " + material.Nombre + " | " + material.NumeroSerie + " | " + material.Descripcion;
+                var texto = material.Nombre + " | " + material.Descripcion;
 
                 var itemMaterial = new SelectListItem
                 {
@@ -404,10 +472,10 @@ namespace SistemaCotizaciones.Controllers
             var cotizacion = await _context.Cotizaciones.FindAsync(id);
             if (cotizacion != null)
             {
-                var materiales = _context.MaterialesCotizacion.Where(m => m.CotizacionId == id).ToList();
-                foreach(var material in materiales)
+                var materialesDelete = _context.MaterialesCotizacion.Where(m => m.CotizacionId == id).ToList();
+                foreach(var materialDelete in materialesDelete)
                 {
-                    _context.Remove(material);
+                    _context.Remove(materialDelete);
                 }
                 _context.Cotizaciones.Remove(cotizacion);
             }

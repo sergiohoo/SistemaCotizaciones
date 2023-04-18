@@ -20,7 +20,7 @@ function soloNumeros(evt) {
 
 function soloNumpunto(evt) {
     var key = evt.keyCode ? evt.keyCode : evt.which;
-    return (key <= 31 || ((key >= 48 && key <= 58) || (key === 46)));
+    return (key <= 31 || ((key >= 48 && key <= 58) || (key === 44)));
 }
 
 function soloRUT(evt) {

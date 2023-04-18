@@ -21,7 +21,7 @@ namespace SistemaCotizaciones.Controllers
         // GET: Quotes
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Quotes.Include(q => q.ContactoFabricante).Include(q => q.Fabricante);
+            var applicationDbContext = _context.Quotes.Include(q => q.ContactoFabricante).Include(q => q.Fabricante).Include(q => q.Cotizaciones.OrderByDescending(c => c.CotizacionId));
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -93,7 +93,7 @@ namespace SistemaCotizaciones.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("QuoteId,FabricanteId,ContactoFabricanteId,NumeroQuote,NombreOportunidad,Vigencia,FechaEmision")] Quote quote)
         {
             if (id != quote.QuoteId)
@@ -155,6 +155,20 @@ namespace SistemaCotizaciones.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Quotes'  is null.");
             }
+
+            var cotizaciones = _context.Cotizaciones.Where(c => c.QuoteId == id).ToList();
+            foreach(var cotizacion in cotizaciones)
+            {
+                var materiales = _context.MaterialesCotizacion.Where(m => m.CotizacionId == cotizacion.CotizacionId).ToList();
+                foreach(var material in materiales)
+                {
+                    _context.Remove(material);
+                    _context.SaveChanges();
+                }
+                _context.Remove(cotizacion);
+                _context.SaveChanges();
+            }
+
             var quote = await _context.Quotes.FindAsync(id);
             if (quote != null)
             {

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaCotizaciones.Model;
 
@@ -11,9 +12,10 @@ using SistemaCotizaciones.Model;
 namespace SistemaCotizaciones.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230415194946_CambiaSNyHWSWaMaterialCotizacion")]
+    partial class CambiaSNyHWSWaMaterialCotizacion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -229,8 +231,8 @@ namespace SistemaCotizaciones.Migrations
                     b.Property<int>("FabricanteId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Margen")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Margen")
+                        .HasColumnType("float");
 
                     b.Property<string>("Observaciones")
                         .IsRequired()
@@ -245,16 +247,13 @@ namespace SistemaCotizaciones.Migrations
                     b.Property<int>("TipoCotizacionId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TotalIVA")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("TotalIVA")
+                        .HasColumnType("float");
 
-                    b.Property<decimal>("TotalNeto")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("TotalNeto")
+                        .HasColumnType("float");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Version")
                         .HasColumnType("int");
 
                     b.HasKey("CotizacionId");
@@ -338,11 +337,11 @@ namespace SistemaCotizaciones.Migrations
                     b.Property<int?>("CotizacionId")
                         .HasColumnType("int");
 
-                    b.Property<decimal?>("DescuentoAbsoluto")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int?>("DescuentoAbsoluto")
+                        .HasColumnType("int");
 
-                    b.Property<decimal?>("DescuentoPorcentaje")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double?>("DescuentoPorcentaje")
+                        .HasColumnType("float");
 
                     b.Property<DateTime?>("FechaInicio")
                         .HasColumnType("datetime2");
@@ -350,26 +349,28 @@ namespace SistemaCotizaciones.Migrations
                     b.Property<DateTime?>("FechaTermino")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal?>("ImpuestoDuty")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double?>("ImpuestoDuty")
+                        .HasColumnType("float");
 
                     b.Property<int?>("MaterialId")
                         .HasColumnType("int");
 
                     b.Property<string>("NumeroSerie")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("PrecioCliente")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int?>("PrecioCliente")
+                        .HasColumnType("int");
 
-                    b.Property<decimal?>("PrecioUnitario")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int?>("PrecioUnitario")
+                        .HasColumnType("int");
 
                     b.Property<string>("TipoMaterial")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal?>("TotalNeto")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int?>("TotalNeto")
+                        .HasColumnType("int");
 
                     b.HasKey("MaterialCotizacionId");
 
@@ -557,7 +558,7 @@ namespace SistemaCotizaciones.Migrations
                         .IsRequired();
 
                     b.HasOne("SistemaCotizaciones.Model.Quote", "Quote")
-                        .WithMany("Cotizaciones")
+                        .WithMany()
                         .HasForeignKey("QuoteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -658,11 +659,6 @@ namespace SistemaCotizaciones.Migrations
                     b.Navigation("Contactos");
 
                     b.Navigation("Quotes");
-                });
-
-            modelBuilder.Entity("SistemaCotizaciones.Model.Quote", b =>
-                {
-                    b.Navigation("Cotizaciones");
                 });
 #pragma warning restore 612, 618
         }

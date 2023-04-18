@@ -16,13 +16,16 @@
             @Html.DisplayNameFor(model => model.Fabricante)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fabricante.FabricanteId)
+            @Html.DisplayFor(model => model.Fabricante.Nombre)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.ContactoFabricante)
         </dt>
+        @{
+            var contacto = Model.ContactoFabricante.Nombre + " " + Model.ContactoFabricante.Apellido;
+        }
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ContactoFabricante.ContactoFabricanteId)
+            @contacto
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.NumeroQuote)
@@ -36,14 +39,11 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.NombreOportunidad)
         </dd>
+        @{
+            var fecha = Model.FechaEmision.ToString("dd/MM/yyyy");
+        }
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Vigencia)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Vigencia)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaEmision)
+            @fecha
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.FechaEmision)

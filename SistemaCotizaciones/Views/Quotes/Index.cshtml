@@ -7,10 +7,11 @@
 
 <h2>Quotes</h2>
 
-<p>
+@*<p>
     <a asp-action="Create">Crear nueva quote</a>
-</p>
-<table class="table">
+</p>*@
+<input class="form-control float-right col-md-3 offset-9 mb-2" id="inputBuscador" type="text" placeholder="Buscar...">
+<table id="tableData" class="table">
     <thead>
         <tr>
             <th>
@@ -26,11 +27,9 @@
                 @Html.DisplayNameFor(model => model.NombreOportunidad)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Vigencia)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.FechaEmision)
             </th>
+            <th>Versión</th>
             <th></th>
         </tr>
     </thead>
@@ -38,10 +37,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Fabricante.FabricanteId)
+                @Html.DisplayFor(modelItem => item.Fabricante.Nombre)
             </td>
+            @{
+                var contacto = item.ContactoFabricante.Nombre + " " + item.ContactoFabricante.Apellido;
+            }
             <td>
-                @Html.DisplayFor(modelItem => item.ContactoFabricante.ContactoFabricanteId)
+                @contacto
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NumeroQuote)
@@ -49,17 +51,38 @@
             <td>
                 @Html.DisplayFor(modelItem => item.NombreOportunidad)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Vigencia)
+            @{
+                var fecha = item.FechaEmision.ToString("dd/MM/yyyy");
+            }
+            <td class="text-center">
+                @fecha
+            </td>
+            <td class="text-right" style="white-space:nowrap;">
+                    @{
+                        foreach(var cotizacion in item.Cotizaciones)
+                        {
+                            <a asp-action="Edit" asp-controller="Cotizaciones" asp-route-id="@cotizacion.CotizacionId" target="_blank" class="mr-2 text-primary">@cotizacion.Version</a>
+                        }
+                    }
+                
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FechaEmision)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.QuoteId"><i class="fa-solid fa-pen-to-square"></i></a> |
                 <a asp-action="Delete" asp-route-id="@item.QuoteId"><i class="fa-solid fa-trash"></i></a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#inputBuscador").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#tableData>tbody tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>

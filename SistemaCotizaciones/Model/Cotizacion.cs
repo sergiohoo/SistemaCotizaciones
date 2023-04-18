@@ -1,11 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 namespace SistemaCotizaciones.Model
 {
     public class Cotizacion
     {
         public int CotizacionId { get; set; }
+        [Display(Name ="Version")]
+        public int Version { get; set; }
         [Display(Name = "Usuario")]
         [Required(ErrorMessage = "Debe seleccionar un vendedor")]
         public int UsuarioId { get; set; }
@@ -53,13 +57,17 @@ namespace SistemaCotizaciones.Model
         public ContactoClienteFinal? ContactoClienteFinal { get; set; }
         [Display(Name = "Margen")]
         [Required(ErrorMessage = "El margen es obligatorio")]
-        public double Margen { get; set; }
+        public decimal Margen { get; set; }
         [Display(Name = "Observaciones")]
         public string Observaciones { get; set; }
         [Display(Name = "Total neto")]
-        public int TotalNeto { get; set; }
+        [DisplayFormat(DataFormatString = "{N2}")]
+        [ModelBinder(BinderType = typeof(DecimalBinder))]
+        public decimal TotalNeto { get; set; }
         [Display(Name = "Total con IVA")]
-        public int TotalIVA { get; set; }
+        [DisplayFormat(DataFormatString = "{N2}")]
+        [ModelBinder(BinderType = typeof(DecimalBinder))]
+        public decimal TotalIVA { get; set; }
 
         public List<MaterialCotizacion>? MaterialesCotizacion { get; set; }
 

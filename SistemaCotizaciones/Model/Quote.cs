@@ -19,11 +19,13 @@ namespace SistemaCotizaciones.Model
         [Required(ErrorMessage = "El número de quote es obligatorio")]
         public string NumeroQuote { get; set; }
         [Display(Name = "Nombre oportunidad")]
+        [Required(ErrorMessage = "El nombre de oportunidad es obligatorio")]
         public string? NombreOportunidad { get; set; }
         [Display(Name = "Vigencia")]
         public bool Vigencia { get; set; }
         [Display(Name = "Fecha de emisión")]
         [Required(ErrorMessage = "La fecha de emisión es obligatoria")]
         public DateTime FechaEmision { get; set; }
+        public List<Cotizacion> Cotizaciones { get; set; }
     }
 }

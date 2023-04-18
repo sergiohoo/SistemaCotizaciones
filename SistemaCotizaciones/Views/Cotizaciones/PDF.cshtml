@@ -147,15 +147,15 @@
                     <td style="border:#999 1px solid;" class="text-right">@material.Cantidad</td>
                     <td style="white-space:nowrap; border:#999 1px solid;">@material.Material.Nombre</td>
                     <td style="border:#999 1px solid;">@material.Material.Descripcion</td>
-                    <td style="border:#999 1px solid;">@material.Material.NumeroSerie</td>
+                    <td style="border:#999 1px solid;">@material.NumeroSerie</td>
                     <td style="white-space:nowrap; border:#999 1px solid;" class="text-center">@material.FechaInicio?.ToString("dd/MM/yyyy").Replace("-","/") - @material.FechaTermino?.ToString("dd/MM/yyyy").Replace("-","/")</td>
-                    <td style="border:#999 1px solid;" class="text-right">@material.PrecioCliente?.ToString("N0")</td>
-                    <td style="border:#999 1px solid;" class="text-right">@material.TotalNeto?.ToString("N0")</td>
+                    <td style="border:#999 1px solid;" class="text-right">@material.PrecioCliente?.ToString("N2")</td>
+                    <td style="border:#999 1px solid;" class="text-right">@material.TotalNeto?.ToString("N2")</td>
                     <td></td>
                 </tr>
             }
 
-            var iva = Math.Round(Model.cotizacion.TotalNeto * 0.19);
+            var iva = Model.cotizacion.TotalNeto * 19/100;
         }
         <tr>
             <td></td>
@@ -165,7 +165,7 @@
             <td></td>
             <td></td>
             <td style="border:#999 1px solid;">Neto</td>
-            <td style="border:#999 1px solid;" class="text-right">@Model.cotizacion.TotalNeto.ToString("N0")</td>
+            <td style="border:#999 1px solid;" class="text-right">@Model.cotizacion.TotalNeto.ToString("N2")</td>
         </tr>
         <tr>
             <td></td>
@@ -175,7 +175,7 @@
             <td></td>
             <td></td>
             <td style="border:#999 1px solid;">IVA</td>
-            <td style="border:#999 1px solid;" class="text-right">@iva.ToString("N0")</td>
+            <td style="border:#999 1px solid;" class="text-right">@iva.ToString("N2")</td>
         </tr>
         <tr>
             <td></td>
@@ -185,7 +185,7 @@
             <td></td>
             <td></td>
             <td style="border:#999 1px solid;">TOTAL</td>
-            <td style="border:#999 1px solid;" class="text-right">@Model.cotizacion.TotalIVA.ToString("N0")</td>
+            <td style="border:#999 1px solid;" class="text-right">@Model.cotizacion.TotalIVA.ToString("N2")</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
@@ -310,7 +310,7 @@
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-            <td colspan="3">- Validez de cotización <span class="text-danger">30 días</span></td>
+            <td colspan="3">- Validez de cotización: Este plazo podria cambiar segun las condiciones definidas por el fabricante</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>

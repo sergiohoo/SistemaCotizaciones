@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaCotizaciones.Model;
 
@@ -11,9 +12,10 @@ using SistemaCotizaciones.Model;
 namespace SistemaCotizaciones.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230417170931_CambiaDoubleADecimal")]
+    partial class CambiaDoubleADecimal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -252,9 +254,6 @@ namespace SistemaCotizaciones.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Version")
                         .HasColumnType("int");
 
                     b.HasKey("CotizacionId");
@@ -557,7 +556,7 @@ namespace SistemaCotizaciones.Migrations
                         .IsRequired();
 
                     b.HasOne("SistemaCotizaciones.Model.Quote", "Quote")
-                        .WithMany("Cotizaciones")
+                        .WithMany()
                         .HasForeignKey("QuoteId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -658,11 +657,6 @@ namespace SistemaCotizaciones.Migrations
                     b.Navigation("Contactos");
 
                     b.Navigation("Quotes");
-                });
-
-            modelBuilder.Entity("SistemaCotizaciones.Model.Quote", b =>
-                {
-                    b.Navigation("Cotizaciones");
                 });
 #pragma warning restore 612, 618
         }

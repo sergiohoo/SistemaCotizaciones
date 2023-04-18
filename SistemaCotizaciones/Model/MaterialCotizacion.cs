@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 
 namespace SistemaCotizaciones.Model
 {
@@ -13,21 +15,37 @@ namespace SistemaCotizaciones.Model
         public int? MaterialId { get; set; }
         [Display(Name = "Material")]
         public Material? Material { get; set; }
+        [Display(Name = "Tipo de material")]
+        public string? TipoMaterial { get; set; }
+        [Display(Name = "Número de serie")]
+        public string? NumeroSerie { get; set; }
         [Display(Name = "Cantidad")]
         public int? Cantidad { get; set; }
 
         [Display(Name = "Precio unitario")]
-        public int? PrecioUnitario { get; set; }
+        [DisplayFormat(DataFormatString = "{N2}")]
+        [ModelBinder(BinderType = typeof(DecimalBinder))]
+        public decimal? PrecioUnitario { get; set; }
         [Display(Name = "Precio cliente")]
-        public int? PrecioCliente { get; set; }
+        [DisplayFormat(DataFormatString = "{N2}")]
+        [ModelBinder(BinderType = typeof(DecimalBinder))]
+        public decimal? PrecioCliente { get; set; }
         [Display(Name = "Total neto")]
-        public int? TotalNeto { get; set; }
+        [DisplayFormat(DataFormatString = "{N2}")]
+        [ModelBinder(BinderType = typeof(DecimalBinder))]
+        public decimal? TotalNeto { get; set; }
         [Display(Name = "Descuento [%]")]
-        public double? DescuentoPorcentaje { get; set; }
+        [DisplayFormat(DataFormatString = "{N2}")]
+        [ModelBinder(BinderType = typeof(DecimalBinder))]
+        public decimal? DescuentoPorcentaje { get; set; }
         [Display(Name = "Descuento [$]")]
-        public int? DescuentoAbsoluto { get; set; }
+        [DisplayFormat(DataFormatString = "{N2}")]
+        [ModelBinder(BinderType = typeof(DecimalBinder))]
+        public decimal? DescuentoAbsoluto { get; set; }
         [Display(Name = "Impuesto/Duty")]
-        public double? ImpuestoDuty { get; set; }
+        [DisplayFormat(DataFormatString = "{N2}")]
+        [ModelBinder(BinderType = typeof(DecimalBinder))]
+        public decimal? ImpuestoDuty { get; set; }
         [Display(Name = "Fecha inicio")]
         public DateTime? FechaInicio { get; set; }
         [Display(Name = "Fecha término")]

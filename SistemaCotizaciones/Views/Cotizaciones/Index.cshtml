@@ -10,17 +10,21 @@
 <p>
     <a asp-action="Create">Crear nueva cotización</a>
 </p>
-<table class="table">
+<input class="form-control float-right col-md-3 offset-9 mb-2" id="inputBuscador" type="text" placeholder="Buscar...">
+<table id="tableData" class="table">
     <thead>
         <tr>
             <th>
                 ID Cotización
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Usuario)
+                @Html.DisplayNameFor(model => model.Quote)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Quote)
+                @Html.DisplayNameFor(model => model.Version)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Usuario)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Canal)
@@ -36,14 +40,20 @@
         {
             var id = item.CotizacionId + 1000;
             <tr>
-                <td>
+                <td class="text-right">
                     @id
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Usuario.NombreUsuario)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Quote.NumeroQuote)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Version)
+                </td>
+                @{
+                    var usuario = item.Usuario.Nombre + " " + item.Usuario.Apellido;
+                }
+                <td style="white-space:nowrap;">
+                    @usuario
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Canal.RazonSocial)
@@ -61,3 +71,16 @@
         }
     </tbody>
 </table>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#inputBuscador").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#tableData>tbody tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
