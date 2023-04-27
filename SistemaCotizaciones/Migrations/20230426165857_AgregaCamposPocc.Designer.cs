@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaCotizaciones.Model;
 
@@ -11,9 +12,10 @@ using SistemaCotizaciones.Model;
 namespace SistemaCotizaciones.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230426165857_AgregaCamposPocc")]
+    partial class AgregaCamposPocc
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -404,36 +406,6 @@ namespace SistemaCotizaciones.Migrations
                     b.ToTable("MaterialesCotizacion");
                 });
 
-            modelBuilder.Entity("SistemaCotizaciones.Model.Pocc", b =>
-                {
-                    b.Property<int>("PoccId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PoccId"), 1L, 1);
-
-                    b.Property<int>("CotizacionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Incoterm")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Origen")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TipoDespacho")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PoccId");
-
-                    b.HasIndex("CotizacionId");
-
-                    b.ToTable("Pocc");
-                });
-
             modelBuilder.Entity("SistemaCotizaciones.Model.Quote", b =>
                 {
                     b.Property<int>("QuoteId")
@@ -666,17 +638,6 @@ namespace SistemaCotizaciones.Migrations
                     b.Navigation("Cotizacion");
 
                     b.Navigation("Material");
-                });
-
-            modelBuilder.Entity("SistemaCotizaciones.Model.Pocc", b =>
-                {
-                    b.HasOne("SistemaCotizaciones.Model.Cotizacion", "Cotizacion")
-                        .WithMany()
-                        .HasForeignKey("CotizacionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cotizacion");
                 });
 
             modelBuilder.Entity("SistemaCotizaciones.Model.Quote", b =>

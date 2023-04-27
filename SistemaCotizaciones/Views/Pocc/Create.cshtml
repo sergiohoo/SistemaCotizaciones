@@ -1,0 +1,232 @@
+﻿@model PoccCreateViewModel
+
+@{
+    ViewData["Title"] = "Nueva POCC";
+    Layout = "~/Views/Shared/_LayoutCotizacion.cshtml";
+}
+
+<style>
+    @@media print {
+        body {
+            width: 21.59cm;
+            height: 27.94cm;
+            margin: 2.5mm 2.5mm 2.5mm 2.5mm;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        .table th {
+            background-color: #222 !important;
+            -webkit-print-color-adjust: exact;
+            white-space: nowrap !important;
+        }
+    }
+
+    .table td, .table th {
+        padding: 3px 3px;
+    }
+
+    body {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+
+    .form-control {
+        font-size: smaller;
+        height: calc(1.5em + .75rem + 2px);
+        border-color:#222222;
+        height:max-content;
+    }
+
+    #tablaMateriales tr, #tablaMateriales td, #tablaMateriales th {
+        padding: 0;
+    }
+</style>
+
+@{
+    int cotId = Model.cotizacion.CotizacionId + 1000;
+}
+<h2>POCC ID @cotId</h2>
+
+<hr />
+<form asp-action="Create" class="row">
+    <input type="hidden" asp-for="pocc.PoccId" />
+    <input type="hidden" asp-for="pocc.CotizacionId" />
+    <input type="hidden" asp-for="cotizacion.CotizacionId" />
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="col-md-12">
+
+        <table id="tablaMateriales" class="table table-bordered small">
+            <tr>
+                <th colspan="2">Reseller</th>
+                <td colspan="3">@Model.cotizacion.Canal.RazonSocial</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th colspan="2">Cuenta Reseller</th>
+                <td colspan="3">@Model.cotizacion.Canal.NumeroClienteIngram</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th colspan="2">Cliente final</th>
+                <td colspan="3">@Model.cotizacion.ClienteFinal.RazonSocial</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th colspan="2">Origen</th>
+                <td colspan="3"><input asp-for="pocc.Origen" class="form-control small" /></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th colspan="2">Incoterm</th>
+                <td colspan="3"><input asp-for="pocc.Incoterm" class="form-control small" /></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th colspan="2">Tipo despacho</th>
+                <td colspan="3"><input asp-for="pocc.TipoDespacho" class="form-control small" /></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <th>Material</th>
+                <th>Cód. Impulse</th>
+                <th>Part number</th>
+                <th>Description</th>
+                <th>Qty</th>
+                <th>Moneda</th>
+                <th>FOB</th>
+                <th>Intercompany</th>
+                <th>Monto internación</th>
+                <th>1% financiero</th>
+                <th>Costo total</th>
+                <th>Costo final total</th>
+                <th>Unit sale</th>
+                <th>Total sale</th>
+                <th>Margen</th>
+            </tr>
+            @{
+                for (int i = 0; i < Model.cotizacion.MaterialesCotizacion.Count; i++)
+                {
+                    <tr>
+                        <input type="hidden" asp-for="@Model.cotizacion.MaterialesCotizacion[i].MaterialCotizacionId" />
+                        <td>@Model.cotizacion.MaterialesCotizacion[i].Material.MaterialSap</td>
+                        <td><input asp-for="@Model.cotizacion.MaterialesCotizacion[i].CodigoImpulse" class="form-control small" /></td>
+                        <td>@Model.cotizacion.MaterialesCotizacion[i].Material.Sku</td>
+                        <td>@Model.cotizacion.MaterialesCotizacion[i].Material.Descripcion</td>
+                        <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].Cantidad</td>
+                        <td>USD</td>
+                        <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].PrecioFob</td>
+                        <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].Intercompany</td>
+                        <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].MontoInternacion</td>
+                        <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].UnoPorcientoFinanciero</td>
+                        <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].CostoTotal</td>
+                        <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].CostoFinalTotal</td>
+                        <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].PrecioCliente</td>
+                        <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].TotalNeto</td>
+                        <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].Margen</td>
+                    </tr>
+                }
+            }
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <th colspan="2">Total a facturar:</th>
+                <th>@Model.cotizacion.TotalNeto</th>
+                <td></td>
+            </tr>
+        </table>
+
+    </div>
+
+
+    <div class="form-group col-md-12 col-sm-12 mt-3 text-right">
+        <input type="submit" value="Guardar y exportar a Excel" class="btn btn-success" />
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index" asp-controller="Cotizaciones">Volver al listado de cotizaciones</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

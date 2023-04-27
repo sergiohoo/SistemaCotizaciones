@@ -55,7 +55,7 @@ namespace SistemaCotizaciones.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MaterialId,Nombre,Descripcion,TipoMaterial,NumeroSerie,CodigoImpulse,PrecioUnitario")] Material material)
+        public async Task<IActionResult> Create([Bind("MaterialId,Sku,Descripcion,TipoMaterial,NumeroSerie,MaterialSap,PrecioUnitario")] Material material)
         {
             if (ModelState.IsValid)
             {
@@ -87,7 +87,7 @@ namespace SistemaCotizaciones.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MaterialId,Nombre,Descripcion,TipoMaterial,NumeroSerie,CodigoImpulse,PrecioUnitario")] Material material)
+        public async Task<IActionResult> Edit(int id, [Bind("MaterialId,Sku,Descripcion,TipoMaterial,NumeroSerie,MaterialSap,PrecioUnitario")] Material material)
         {
             if (id != material.MaterialId)
             {

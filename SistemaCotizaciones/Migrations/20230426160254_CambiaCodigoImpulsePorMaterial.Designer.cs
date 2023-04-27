@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaCotizaciones.Model;
 
@@ -11,9 +12,10 @@ using SistemaCotizaciones.Model;
 namespace SistemaCotizaciones.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230426160254_CambiaCodigoImpulsePorMaterial")]
+    partial class CambiaCodigoImpulsePorMaterial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -312,12 +314,12 @@ namespace SistemaCotizaciones.Migrations
                     b.Property<string>("MaterialSap")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PrecioUnitario")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Sku")
+                    b.Property<string>("Nombre")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PrecioUnitario")
+                        .HasColumnType("int");
 
                     b.HasKey("MaterialId");
 
@@ -334,15 +336,6 @@ namespace SistemaCotizaciones.Migrations
 
                     b.Property<int?>("Cantidad")
                         .HasColumnType("int");
-
-                    b.Property<string>("CodigoImpulse")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal?>("CostoFinalTotal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("CostoTotal")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int?>("CotizacionId")
                         .HasColumnType("int");
@@ -362,25 +355,13 @@ namespace SistemaCotizaciones.Migrations
                     b.Property<decimal?>("ImpuestoDuty")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal?>("Intercompany")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("Margen")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int?>("MaterialId")
                         .HasColumnType("int");
-
-                    b.Property<decimal?>("MontoInternacion")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("NumeroSerie")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("PrecioCliente")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("PrecioFob")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("PrecioUnitario")
@@ -392,9 +373,6 @@ namespace SistemaCotizaciones.Migrations
                     b.Property<decimal?>("TotalNeto")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal?>("UnoPorcientoFinanciero")
-                        .HasColumnType("decimal(18,2)");
-
                     b.HasKey("MaterialCotizacionId");
 
                     b.HasIndex("CotizacionId");
@@ -402,36 +380,6 @@ namespace SistemaCotizaciones.Migrations
                     b.HasIndex("MaterialId");
 
                     b.ToTable("MaterialesCotizacion");
-                });
-
-            modelBuilder.Entity("SistemaCotizaciones.Model.Pocc", b =>
-                {
-                    b.Property<int>("PoccId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PoccId"), 1L, 1);
-
-                    b.Property<int>("CotizacionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Incoterm")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Origen")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TipoDespacho")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PoccId");
-
-                    b.HasIndex("CotizacionId");
-
-                    b.ToTable("Pocc");
                 });
 
             modelBuilder.Entity("SistemaCotizaciones.Model.Quote", b =>
@@ -666,17 +614,6 @@ namespace SistemaCotizaciones.Migrations
                     b.Navigation("Cotizacion");
 
                     b.Navigation("Material");
-                });
-
-            modelBuilder.Entity("SistemaCotizaciones.Model.Pocc", b =>
-                {
-                    b.HasOne("SistemaCotizaciones.Model.Cotizacion", "Cotizacion")
-                        .WithMany()
-                        .HasForeignKey("CotizacionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cotizacion");
                 });
 
             modelBuilder.Entity("SistemaCotizaciones.Model.Quote", b =>

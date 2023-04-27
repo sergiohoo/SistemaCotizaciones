@@ -110,11 +110,11 @@ namespace SistemaCotizaciones.Controllers
             ViewData["TipoCotizacionId"] = new SelectList(_context.TiposCotizacion, "TipoCotizacionId", nameof(TipoCotizacion.Nombre));
             ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", nameof(Usuario.NombreUsuario));
 
-            var listaMateriales = _context.Materiales.OrderBy(m => m.Nombre).ToList();
+            var listaMateriales = _context.Materiales.OrderBy(m => m.Sku).ToList();
             var selectListMateriales = new List<SelectListItem>();
             foreach (var material in listaMateriales)
             {
-                var texto = material.Nombre + " | " + material.Descripcion;
+                var texto = material.Sku + " | " + material.Descripcion;
 
                 var itemMaterial = new SelectListItem
                 {
@@ -181,6 +181,42 @@ namespace SistemaCotizaciones.Controllers
                     if (material.Cantidad != null && material.Cantidad > 0)
                     {
                         material.CotizacionId = cotizacion.CotizacionId;
+
+                        decimal? precioUnitario = material.PrecioUnitario;
+                        decimal? descuento = material.DescuentoPorcentaje;
+
+                        decimal precioFob = 0;
+                        decimal.TryParse((precioUnitario * (1 - descuento / 100))?.ToString("N2"), out precioFob);
+
+                        decimal? interCompany = precioFob * 2 / 1000;
+                        if (material.TipoMaterial == "HW")
+                        {
+                            interCompany = precioFob * 8 / 1000;
+                        }
+
+                        decimal? montoInternacion = precioFob * material.ImpuestoDuty * 1 / 100;
+                        if (material.TipoMaterial == "SW")
+                        {
+                            montoInternacion = 0;
+                        }
+
+                        decimal? unoPorcientoFinanciero = precioFob * 1 / 100;
+                        decimal? costoTotal = interCompany + unoPorcientoFinanciero + montoInternacion + precioFob;
+
+                        decimal? costoFinalTotal = costoTotal * material.Cantidad;
+
+                        decimal? totalSale = material.TotalNeto;
+
+                        decimal? margen = 100*(totalSale - costoFinalTotal) / totalSale;
+
+                        material.PrecioFob = precioFob;
+                        material.Intercompany = interCompany;
+                        material.MontoInternacion = montoInternacion;
+                        material.UnoPorcientoFinanciero = unoPorcientoFinanciero;
+                        material.CostoTotal = costoTotal;
+                        material.CostoFinalTotal = costoFinalTotal;
+                        material.Margen = margen;
+
                         materialesCotizacion.Add(material);
                     }
                 }
@@ -212,9 +248,17 @@ namespace SistemaCotizaciones.Controllers
         {
             if (cotizacion != null && quote != null)
             {
+                //cotizacion.CanalId = 0;
+                foreach(var material in cotizacion.MaterialesCotizacion)
+                {
+                    material.MaterialCotizacionId = 0;
+                    material.CotizacionId = 0;
+                }
+
                 _context.Update(quote);
                 await _context.SaveChangesAsync();
 
+                cotizacion.CotizacionId = 0;
                 cotizacion.QuoteId = quote.QuoteId;
                 cotizacion.FabricanteId = quote.FabricanteId;
 
@@ -229,6 +273,42 @@ namespace SistemaCotizaciones.Controllers
                     if (material.Cantidad != null && material.Cantidad > 0)
                     {
                         material.CotizacionId = cotizacion.CotizacionId;
+
+                        decimal? precioUnitario = material.PrecioUnitario;
+                        decimal? descuento = material.DescuentoPorcentaje;
+
+                        decimal precioFob = 0;
+                        decimal.TryParse((precioUnitario * (1 - descuento / 100))?.ToString("N2"), out precioFob);
+
+                        decimal? interCompany = precioFob * 2 / 1000;
+                        if (material.TipoMaterial == "HW")
+                        {
+                            interCompany = precioFob * 8 / 1000;
+                        }
+
+                        decimal? montoInternacion = precioFob * material.ImpuestoDuty * 1 / 100;
+                        if (material.TipoMaterial == "SW")
+                        {
+                            montoInternacion = 0;
+                        }
+
+                        decimal? unoPorcientoFinanciero = precioFob * 1 / 100;
+                        decimal? costoTotal = interCompany + unoPorcientoFinanciero + montoInternacion + precioFob;
+
+                        decimal? costoFinalTotal = costoTotal * material.Cantidad;
+
+                        decimal? totalSale = material.TotalNeto;
+
+                        decimal? margen = 100 * (totalSale - costoFinalTotal) / totalSale;
+
+                        material.PrecioFob = precioFob;
+                        material.Intercompany = interCompany;
+                        material.MontoInternacion = montoInternacion;
+                        material.UnoPorcientoFinanciero = unoPorcientoFinanciero;
+                        material.CostoTotal = costoTotal;
+                        material.CostoFinalTotal = costoFinalTotal;
+                        material.Margen = margen;
+
                         materialesCotizacion.Add(material);
                     }
                 }
@@ -280,11 +360,11 @@ namespace SistemaCotizaciones.Controllers
             ViewData["TipoCotizacionId"] = new SelectList(_context.TiposCotizacion, "TipoCotizacionId", nameof(TipoCotizacion.Nombre), cotizacion.TipoCotizacionId);
             ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", nameof(Usuario.NombreUsuario), cotizacion.UsuarioId);
 
-            var listaMateriales = _context.Materiales.OrderBy(m => m.Nombre).ToList();
+            var listaMateriales = _context.Materiales.OrderBy(m => m.Sku).ToList();
             var selectListMateriales = new List<SelectListItem>();
             foreach (var material in listaMateriales)
             {
-                var texto = material.Nombre + " | " + material.Descripcion;
+                var texto = material.Sku + " | " + material.Descripcion;
 
                 var itemMaterial = new SelectListItem
                 {
@@ -332,10 +412,10 @@ namespace SistemaCotizaciones.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Cotizacion cotizacion, Quote quote)
         {
-            if (ModelState.IsValid)
+            if (cotizacion != null && quote != null)
             {
                 try
                 {
@@ -351,6 +431,42 @@ namespace SistemaCotizaciones.Controllers
                         if (material.TotalNeto != null && material.TotalNeto > 0)
                         {
                             material.CotizacionId = cotizacion.CotizacionId;
+
+                            decimal? precioUnitario = material.PrecioUnitario;
+                            decimal? descuento = material.DescuentoPorcentaje;
+
+                            decimal precioFob = 0;
+                            decimal.TryParse((precioUnitario * (1 - descuento / 100))?.ToString("N2"),out precioFob);
+
+                            decimal? interCompany = precioFob * 2/1000;
+                            if(material.TipoMaterial == "HW")
+                            {
+                                interCompany = precioFob * 8 / 1000;
+                            }
+
+                            decimal? montoInternacion = precioFob * material.ImpuestoDuty * 1/100;
+                            if(material.TipoMaterial == "SW")
+                            {
+                                montoInternacion = 0;
+                            }
+
+                            decimal? unoPorcientoFinanciero = precioFob * 1 / 100;
+                            decimal? costoTotal = interCompany + unoPorcientoFinanciero + montoInternacion + precioFob;
+
+                            decimal? costoFinalTotal = costoTotal * material.Cantidad;
+
+                            decimal? totalSale = material.TotalNeto;
+
+                            decimal? margen = 100 * (totalSale - costoFinalTotal) / totalSale;
+
+                            material.PrecioFob = precioFob;
+                            material.Intercompany = interCompany;
+                            material.MontoInternacion = montoInternacion;
+                            material.UnoPorcientoFinanciero = unoPorcientoFinanciero;
+                            material.CostoTotal = costoTotal;
+                            material.CostoFinalTotal = costoFinalTotal;
+                            material.Margen = margen;
+
                             materialesCotizacion.Add(material);
                         }
                     }
@@ -373,64 +489,66 @@ namespace SistemaCotizaciones.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-
-            ViewData["CanalId"] = new SelectList(_context.Canales, "CanalId", nameof(Canal.RazonSocial), cotizacion.CanalId);
-            ViewData["ClienteFinalId"] = new SelectList(_context.ClientesFinales, "ClienteFinalId", nameof(ClienteFinal.RazonSocial), cotizacion.ClienteFinalId);
-            ViewData["ContactoCanalId"] = new SelectList(_context.ContactosCanales.Where(c => c.CanalId == cotizacion.CanalId), "ContactoCanalId", nameof(ContactoCanal.Nombre), cotizacion.ContactoCanalId);
-            ViewData["ContactoClienteFinalId"] = new SelectList(_context.ContactosClientesFinales.Where(c => c.ClienteFinalId == cotizacion.ClienteFinalId), "ContactoClienteFinalId", nameof(ContactoClienteFinal.Nombre), cotizacion.ContactoClienteFinalId);
-            ViewData["FabricanteId"] = new SelectList(_context.Fabricantes, "FabricanteId", nameof(Fabricante.Nombre), cotizacion.FabricanteId);
-            ViewData["ContactoFabricanteId"] = new SelectList(_context.ContactosFabricantes.Where(f => f.FabricanteId == cotizacion.FabricanteId), "ContactoFabricanteId", nameof(ContactoFabricante.Nombre), quote.ContactoFabricanteId);
-            ViewData["QuoteId"] = new SelectList(_context.Quotes, "QuoteId", nameof(Quote.NumeroQuote), cotizacion.QuoteId);
-            ViewData["TipoCompraId"] = new SelectList(_context.TiposCompra, "TipoCompraId", nameof(TipoCompra.Nombre), cotizacion.TipoCompraId);
-            ViewData["TipoCotizacionId"] = new SelectList(_context.TiposCotizacion, "TipoCotizacionId", nameof(TipoCotizacion.Nombre), cotizacion.TipoCotizacionId);
-            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", nameof(Usuario.NombreUsuario), cotizacion.UsuarioId);
-
-            var listaMateriales = _context.Materiales.OrderBy(m => m.Nombre).ToList();
-            var selectListMateriales = new List<SelectListItem>();
-            foreach (var material in listaMateriales)
+            else
             {
-                var texto = material.Nombre + " | " + material.Descripcion;
+                ViewData["CanalId"] = new SelectList(_context.Canales, "CanalId", nameof(Canal.RazonSocial), cotizacion.CanalId);
+                ViewData["ClienteFinalId"] = new SelectList(_context.ClientesFinales, "ClienteFinalId", nameof(ClienteFinal.RazonSocial), cotizacion.ClienteFinalId);
+                ViewData["ContactoCanalId"] = new SelectList(_context.ContactosCanales.Where(c => c.CanalId == cotizacion.CanalId), "ContactoCanalId", nameof(ContactoCanal.Nombre), cotizacion.ContactoCanalId);
+                ViewData["ContactoClienteFinalId"] = new SelectList(_context.ContactosClientesFinales.Where(c => c.ClienteFinalId == cotizacion.ClienteFinalId), "ContactoClienteFinalId", nameof(ContactoClienteFinal.Nombre), cotizacion.ContactoClienteFinalId);
+                ViewData["FabricanteId"] = new SelectList(_context.Fabricantes, "FabricanteId", nameof(Fabricante.Nombre), cotizacion.FabricanteId);
+                ViewData["ContactoFabricanteId"] = new SelectList(_context.ContactosFabricantes.Where(f => f.FabricanteId == cotizacion.FabricanteId), "ContactoFabricanteId", nameof(ContactoFabricante.Nombre), quote.ContactoFabricanteId);
+                ViewData["QuoteId"] = new SelectList(_context.Quotes, "QuoteId", nameof(Quote.NumeroQuote), cotizacion.QuoteId);
+                ViewData["TipoCompraId"] = new SelectList(_context.TiposCompra, "TipoCompraId", nameof(TipoCompra.Nombre), cotizacion.TipoCompraId);
+                ViewData["TipoCotizacionId"] = new SelectList(_context.TiposCotizacion, "TipoCotizacionId", nameof(TipoCotizacion.Nombre), cotizacion.TipoCotizacionId);
+                ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", nameof(Usuario.NombreUsuario), cotizacion.UsuarioId);
 
-                var itemMaterial = new SelectListItem
+                var listaMateriales = _context.Materiales.OrderBy(m => m.Sku).ToList();
+                var selectListMateriales = new List<SelectListItem>();
+                foreach (var material in listaMateriales)
                 {
-                    Text = texto,
-                    Value = material.MaterialId.ToString()
+                    var texto = material.Sku + " | " + material.Descripcion;
+
+                    var itemMaterial = new SelectListItem
+                    {
+                        Text = texto,
+                        Value = material.MaterialId.ToString()
+                    };
+
+                    selectListMateriales.Add(itemMaterial);
+                }
+
+
+                ViewData["Materiales"] = new SelectList(selectListMateriales, "Value", "Text");
+
+                var materiales = new List<MaterialCotizacion>();
+                foreach (var material in cotizacion.MaterialesCotizacion)
+                {
+                    materiales.Add(material);
+                }
+
+                for (int i = 0; i < 100 - cotizacion.MaterialesCotizacion.Count; i++)
+                {
+                    var material = new MaterialCotizacion
+                    {
+                        FechaInicio = DateTime.Now,
+                        FechaTermino = DateTime.Now.AddDays(30),
+                        Cantidad = 0,
+                        ImpuestoDuty = 0,
+                        PrecioUnitario = 0,
+                        DescuentoPorcentaje = 0
+                    };
+                    materiales.Add(material);
+                }
+                cotizacion.MaterialesCotizacion = materiales;
+
+                var model = new CotizacionCreateViewModel
+                {
+                    Cotizacion = cotizacion,
+                    Quote = quote
                 };
 
-                selectListMateriales.Add(itemMaterial);
+                return View(model);
             }
-
-
-            ViewData["Materiales"] = new SelectList(selectListMateriales, "Value", "Text");
-
-            var materiales = new List<MaterialCotizacion>();
-            foreach (var material in cotizacion.MaterialesCotizacion)
-            {
-                materiales.Add(material);
-            }
-
-            for (int i = 0; i < 100 - cotizacion.MaterialesCotizacion.Count; i++)
-            {
-                var material = new MaterialCotizacion
-                {
-                    FechaInicio = DateTime.Now,
-                    FechaTermino = DateTime.Now.AddDays(30),
-                    Cantidad = 0,
-                    ImpuestoDuty = 0,
-                    PrecioUnitario = 0,
-                    DescuentoPorcentaje = 0
-                };
-                materiales.Add(material);
-            }
-            cotizacion.MaterialesCotizacion = materiales;
-
-            var model = new CotizacionCreateViewModel
-            {
-                Cotizacion = cotizacion,
-                Quote = quote
-            };
-
-            return View(model);
         }
 
         // GET: Cotizaciones/Delete/5

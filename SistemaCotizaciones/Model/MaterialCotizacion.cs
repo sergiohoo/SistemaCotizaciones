@@ -50,5 +50,13 @@ namespace SistemaCotizaciones.Model
         public DateTime? FechaInicio { get; set; }
         [Display(Name = "Fecha término")]
         public DateTime? FechaTermino { get; set; }
+        public string? CodigoImpulse { get; set; }
+        public decimal? PrecioFob { get; set; }
+        public decimal? Intercompany { get; set; }
+        public decimal? MontoInternacion { get; set; }
+        public decimal? UnoPorcientoFinanciero { get; set; }
+        public decimal? CostoTotal { get; set; }
+        public decimal? CostoFinalTotal { get; set; }
+        public decimal? Margen { get; set; }
     }
 }

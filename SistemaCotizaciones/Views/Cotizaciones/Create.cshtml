@@ -199,8 +199,7 @@
                         </td>
                         <td>
                             <select asp-for="Cotizacion.MaterialesCotizacion[i-1].TipoMaterial" class="form-control small mTipo">
-                                <option value=""></option>
-                                <option value="SW">SW</option>
+                                <option value="SW" selected="selected">SW</option>
                                 <option value="HW">HW</option>
                             </select>
                         </td>
@@ -226,7 +225,6 @@
                         </td>
                         <td>
                             <select asp-for="Cotizacion.MaterialesCotizacion[i-1].TipoMaterial" class="form-control small mTipo">
-                                <option value=""></option>
                                 <option value="SW">SW</option>
                                 <option value="HW">HW</option>
                             </select>
@@ -335,7 +333,7 @@
 
             precioCliente = (precioInternacion * (1 + margen / 100)).toFixed(2);
 
-            totalNeto = (precioCliente * cantidad).toFixed(2);
+            totalNeto = (precioInternacion * (1 + margen / 100) * cantidad).toFixed(2);
 
             if (precioCliente > 0 && totalNeto > 0) {
                 tr.find(".mPrecioCliente").val(precioCliente);

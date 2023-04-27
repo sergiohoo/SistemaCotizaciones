@@ -72,8 +72,8 @@
 <h2>Modificar cotización</h2>
 
 <hr />
-<form id="formCotizacion" asp-action="GuardaVersion" class="row">
-    @*<input type="hidden" asp-for="Cotizacion.CotizacionId" />*@
+<form id="formCotizacion" asp-action="Edit" class="row">
+    <input type="hidden" asp-for="Cotizacion.CotizacionId" />
     <input type="hidden" asp-for="Cotizacion.Version" />
     <input type="hidden" asp-for="Quote.QuoteId" />
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -200,7 +200,7 @@
                 for (int i = 1; i <= nCotizaciones; i++)
                 {
                     var idDelete = Model.Cotizacion.MaterialesCotizacion[i - 1].MaterialCotizacionId;
-                    var skuDelete = Model.Cotizacion.MaterialesCotizacion[i - 1].Material.Nombre;
+                    var skuDelete = Model.Cotizacion.MaterialesCotizacion[i - 1].Material.Sku;
 
                     var prec = Model.Cotizacion.MaterialesCotizacion[i - 1].PrecioUnitario.ToString().Replace(",", ".");
                     var desc = Model.Cotizacion.MaterialesCotizacion[i - 1].DescuentoPorcentaje.ToString().Replace(",", ".");
@@ -209,7 +209,7 @@
                     var totl = Model.Cotizacion.MaterialesCotizacion[i - 1].TotalNeto.ToString().Replace(",", ".");
 
                     <tr id="tr_@i" class="visible">
-                        @*<input type="hidden" asp-for="Cotizacion.MaterialesCotizacion[i-1].MaterialCotizacionId" />*@
+                        <input type="hidden" asp-for="Cotizacion.MaterialesCotizacion[i-1].MaterialCotizacionId" />
                         <td class="text-right">@i</td>
                         <td class="td-selectpicker">
                             <select asp-for="Cotizacion.MaterialesCotizacion[i-1].MaterialId" class="form-control small selectpicker mMaterial" data-live-search="true" asp-items="ViewBag.Materiales">
@@ -218,7 +218,6 @@
                         </td>
                         <td>
                             <select asp-for="Cotizacion.MaterialesCotizacion[i-1].TipoMaterial" class="form-control small mTipo">
-                                <option value=""></option>
                                 <option value="SW">SW</option>
                                 <option value="HW">HW</option>
                             </select>
@@ -246,7 +245,6 @@
                         </td>
                         <td>
                             <select asp-for="Cotizacion.MaterialesCotizacion[i-1].TipoMaterial" class="form-control small mTipo">
-                                <option value=""></option>
                                 <option value="SW">SW</option>
                                 <option value="HW">HW</option>
                             </select>
@@ -285,8 +283,8 @@
         <label asp-for="Cotizacion.TotalIVA" class="control-label"></label>
         <input asp-for="Cotizacion.TotalIVA" value="@totlIva" readonly class="form-control text-success text-right p-1" />
     </div>
-
     <div class="form-group col-md-12 col-sm-12 text-right">
+        <button type="button" value="Guardar Version" class="btn btn-success" onclick="GuardaVersion();">Guardar Versión</button>
         <input type="submit" value="Guardar" class="btn btn-primary" />
     </div>
 </form>
@@ -328,6 +326,12 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/validaciones.js"></script>
 <script>
+
+    function GuardaVersion() {
+        $("#formCotizacion").attr("action","/Cotizaciones/GuardaVersion");
+        $("#formCotizacion").submit();
+        //console.log("submit");
+    }
 
     function deleteMaterial(id, sku) {
         $("#id-delete").val(id);
@@ -397,7 +401,7 @@
 
             precioCliente = (precioInternacion * (1 + margen / 100)).toFixed(2);
 
-            totalNeto = (precioCliente * cantidad).toFixed(2);
+            totalNeto = (precioInternacion * (1 + margen / 100) * cantidad).toFixed(2);
 
             if (precioCliente > 0 && totalNeto > 0) {
                 tr.find(".mPrecioCliente").val(precioCliente);
@@ -407,6 +411,12 @@
 
         CalculaTotales();
     }
+
+    $(".mTipo").on("change", function () {
+        var id = $(this).attr("id").split("_")[2];
+        CalculaPrecio(parseInt(id) + 1);
+    }
+    );
 
     $(".mMaterial").on("change", function () {
         var id = $(this).attr("id").split("_")[2];

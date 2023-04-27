@@ -66,6 +66,7 @@
                     <a asp-action="Delete" asp-route-id="@item.CotizacionId"><i class="fa-solid fa-trash"></i></a> |
                     <a asp-action="Excel" asp-route-id="@item.CotizacionId" target="_blank"><i class="fas fa-file-excel"></i></a> |
                     <a asp-action="PDF" asp-route-id="@item.CotizacionId" target="_blank"><i class="fas fa-file-pdf"></i></a>
+                    <a asp-action="Create" asp-controller="Pocc" asp-route-id="@item.CotizacionId" target="_blank">POCC</a>
                 </td>
             </tr>
         }

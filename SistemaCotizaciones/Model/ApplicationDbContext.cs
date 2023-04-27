@@ -34,6 +34,7 @@ namespace SistemaCotizaciones.Model
         public DbSet<Cotizacion> Cotizaciones { get; set; }
         public DbSet<MaterialCotizacion> MaterialesCotizacion { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Pocc> Pocc { get; set; }
 
     }
 }
