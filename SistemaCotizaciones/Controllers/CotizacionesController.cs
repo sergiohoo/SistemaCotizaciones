@@ -49,7 +49,7 @@ namespace SistemaCotizaciones.Controllers
 
         public IActionResult PDF(int id)
         {
-            var cotizacion = _context.Cotizaciones.Where(c => c.CotizacionId == id).Include(c => c.Usuario).Include(c => c.MaterialesCotizacion).ThenInclude(m => m.Material).Include(c => c.ClienteFinal).Include(c => c.Canal).FirstOrDefault();
+            var cotizacion = _context.Cotizaciones.Where(c => c.CotizacionId == id).Include(c => c.Usuario).Include(c => c.MaterialesCotizacion).ThenInclude(m => m.Material).Include(c => c.ClienteFinal).Include(c => c.Canal).Include(c => c.ContactoCanal).FirstOrDefault();
             var model = new CotizacionExcelViewModel
             {
                 cotizacion = cotizacion
@@ -60,7 +60,7 @@ namespace SistemaCotizaciones.Controllers
 
         public IActionResult Excel(int id)
         {
-            var cotizacion = _context.Cotizaciones.Where(c => c.CotizacionId == id).Include(c => c.Usuario).Include(c => c.MaterialesCotizacion).ThenInclude(m => m.Material).Include(c => c.ClienteFinal).Include(c => c.Canal).FirstOrDefault();
+            var cotizacion = _context.Cotizaciones.Where(c => c.CotizacionId == id).Include(c => c.Usuario).Include(c => c.MaterialesCotizacion).ThenInclude(m => m.Material).Include(c => c.ClienteFinal).Include(c => c.Canal).Include(c => c.ContactoCanal).FirstOrDefault();
             var model = new CotizacionExcelViewModel
             {
                 cotizacion = cotizacion

@@ -330,7 +330,6 @@
     function GuardaVersion() {
         $("#formCotizacion").attr("action","/Cotizaciones/GuardaVersion");
         $("#formCotizacion").submit();
-        //console.log("submit");
     }
 
     function deleteMaterial(id, sku) {
@@ -342,16 +341,6 @@
 
     $(document).ready(function () {
         $("#formCotizacion").submit(function () {
-            //var totalNeto = parseFloat($("#Cotizacion_TotalNeto").val().replace(".", ","));
-            //console.log(totalNeto);
-            //if (totalNeto > 0) {
-            //    console.log("mayor");
-            //    return true;
-            //}
-            //else {
-            //    console.log("menor");
-            //    return false;
-            //}
             return true;
         });
     });
@@ -369,12 +358,12 @@
         $("#Cotizacion_TotalNeto").val(total);
         $("#Cotizacion_TotalIVA").val((total * 1.19).toFixed(2));
 
-        console.log("total = " + $("#Cotizacion_TotalNeto").val());
+        //console.log("total = " + $("#Cotizacion_TotalNeto").val());
     }
 
     function CalculaPrecio(rowId) {
 
-        console.log(rowId);
+        //console.log(rowId);
 
         var tr = $("#tr_" + rowId);
         var tipo = tr.find(".mTipo").val();
@@ -393,10 +382,10 @@
 
             var precioInternacion = 0;
             if (tipo == "SW") {
-                precioInternacion = precioFoB * (1 + impuesto / 100);
+                precioInternacion = precioFoB * (1 - impuesto / 100);
             }
             else if (tipo == "HW") {
-                precioInternacion = precioFoB / (1 - impuesto / 100);
+                precioInternacion = precioFoB / (1 + impuesto / 100);
             }
 
             precioCliente = (precioInternacion * (1 + margen / 100)).toFixed(2);
@@ -408,43 +397,47 @@
                 tr.find(".mTotalNeto").val(totalNeto);
             }
         }
-
-        CalculaTotales();
     }
 
     $(".mTipo").on("change", function () {
         var id = $(this).attr("id").split("_")[2];
         CalculaPrecio(parseInt(id) + 1);
+        CalculaTotales();
     }
     );
 
     $(".mMaterial").on("change", function () {
         var id = $(this).attr("id").split("_")[2];
         CalculaPrecio(parseInt(id) + 1);
+        CalculaTotales();
     }
     );
 
     $(".mCantidad").on("change", function () {
         var id = $(this).attr("id").split("_")[2];
         CalculaPrecio(parseInt(id) + 1);
+        CalculaTotales();
     }
     );
 
     $(".mPrecioUnitario").on("change", function () {
         var id = $(this).attr("id").split("_")[2];
         CalculaPrecio(parseInt(id) + 1);
+        CalculaTotales();
     }
     );
 
     $(".mDescuento").on("change", function () {
         var id = $(this).attr("id").split("_")[2];
         CalculaPrecio(parseInt(id) + 1);
+        CalculaTotales();
     }
     );
 
     $(".mImpuesto").on("change", function () {
         var id = $(this).attr("id").split("_")[2];
         CalculaPrecio(parseInt(id) + 1);
+        CalculaTotales();
     }
     );
 
@@ -452,6 +445,7 @@
         for (i = 1; i < 100; i++) {
             CalculaPrecio(i);
         }
+        CalculaTotales();
     }
     );
 

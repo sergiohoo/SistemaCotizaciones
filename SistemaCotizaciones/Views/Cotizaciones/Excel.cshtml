@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Exportar a Excel</title>
+    <title>Cotización versión MS Excel</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link href="~/lib/bootstrap-select/css/bootstrap-select.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -92,12 +92,10 @@
         </tr>
         <tr>
             <td></td>
-            <th style="background-color:#222; color:#fff">
-                Fecha:
-            </th>
-            <td>@DateTime.Now.ToString("dd MMM yyyy")</td>
+            <td></td>
+            <td></td>
             <td colspan="3"></td>
-            <th colspan="2" style="background-color:#222; color:#fff">Cotización:</th>
+            <th colspan="2" style="background-color:#222; color:#fff">Fecha:</th>
             <td></td>
         </tr>
         <tr>
@@ -106,7 +104,16 @@
                 Partner:
             </th>
             <td colspan="4">@Model.cotizacion.Canal.RazonSocial</td>
-            <td colspan="2">@idCotizacion.ToString().PadLeft(10,'0')</td>
+            <td>@DateTime.Now.ToString("dd MMM yyyy")</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td></td>
+            <th style="background-color:#222; color:#fff">
+                Contacto canal:
+            </th>
+            <td colspan="4">@Model.cotizacion.ContactoCanal.Nombre @Model.cotizacion.ContactoCanal.Apellido</td>
+            <th colspan="2" style="background-color:#222; color:#fff">Cotización:</th>
             <td></td>
         </tr>
         <tr>
@@ -115,7 +122,7 @@
                 Cliente final:
             </th>
             <td colspan="4">@Model.cotizacion.ClienteFinal.RazonSocial</td>
-            <td colspan="2"></td>
+            <td colspan="2">@idCotizacion.ToString().PadLeft(10,'0')</td>
             <td></td>
         </tr>
         <tr>
@@ -309,7 +316,7 @@
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-            <td colspan="3">- Validez de cotización: Este plazo podria cambiar segun las condiciones definidas por el fabricante</td>
+            <td colspan="3">- Validez de cotización: 30 días. Este plazo podria cambiar segun las condiciones definidas por el fabricante</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
