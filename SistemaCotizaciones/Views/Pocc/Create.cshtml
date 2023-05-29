@@ -34,8 +34,8 @@
     .form-control {
         font-size: smaller;
         height: calc(1.5em + .75rem + 2px);
-        border-color:#222222;
-        height:max-content;
+        border-color: #222222;
+        height: max-content;
     }
 
     #tablaMateriales tr, #tablaMateriales td, #tablaMateriales th {
@@ -70,6 +70,12 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                @{
+                    if (Model.cotizacion.TipoCompraId != 1)
+                    {
+                        <td></td>
+                    }
+                }
             </tr>
             <tr>
                 <th colspan="2">Cuenta Reseller</th>
@@ -83,7 +89,12 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
+                @{
+                    if (Model.cotizacion.TipoCompraId != 1)
+                    {
+                        <td></td>
+                    }
+                }
             </tr>
             <tr>
                 <th colspan="2">Cliente final</th>
@@ -97,7 +108,12 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
+                @{
+                    if (Model.cotizacion.TipoCompraId != 1)
+                    {
+                        <td></td>
+                    }
+                }
             </tr>
             <tr>
                 <th colspan="2">Origen</th>
@@ -111,7 +127,12 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
+                @{
+                    if (Model.cotizacion.TipoCompraId != 1)
+                    {
+                        <td></td>
+                    }
+                }
             </tr>
             <tr>
                 <th colspan="2">Incoterm</th>
@@ -125,7 +146,12 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
+                @{
+                    if (Model.cotizacion.TipoCompraId != 1)
+                    {
+                        <td></td>
+                    }
+                }
             </tr>
             <tr>
                 <th colspan="2">Tipo despacho</th>
@@ -139,7 +165,12 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
+                @{
+                    if (Model.cotizacion.TipoCompraId != 1)
+                    {
+                        <td></td>
+                    }
+                }
             </tr>
             <tr>
                 <td>&nbsp;</td>
@@ -154,6 +185,14 @@
                 <td></td>
                 <td></td>
                 <td></td>
+                <td></td>
+                <td></td>
+                @{
+                    if (Model.cotizacion.TipoCompraId != 1)
+                    {
+                        <td></td>
+                    }
+                }
             </tr>
             <tr>
                 <th>Material</th>
@@ -163,7 +202,13 @@
                 <th>Qty</th>
                 <th>Moneda</th>
                 <th>FOB</th>
-                <th>Intercompany</th>
+                @{
+                    if (Model.cotizacion.TipoCompraId != 1)
+                    {
+                        <th>Intercompany</th>
+                    }
+                }
+
                 <th>Monto internación</th>
                 <th>1% financiero</th>
                 <th>Costo total</th>
@@ -184,7 +229,14 @@
                         <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].Cantidad</td>
                         <td>USD</td>
                         <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].PrecioFob</td>
-                        <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].Intercompany</td>
+
+                        @{
+                            if (Model.cotizacion.TipoCompraId != 1)
+                            {
+                                <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].Intercompany</td>
+                            }
+                        }
+
                         <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].MontoInternacion</td>
                         <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].UnoPorcientoFinanciero</td>
                         <td style="text-align:right;">@Model.cotizacion.MaterialesCotizacion[i].CostoTotal</td>
@@ -203,7 +255,14 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
+
+                @{
+                    if (Model.cotizacion.TipoCompraId != 1)
+                    {
+                        <td></td>
+                    }
+                }
+                
                 <td></td>
                 <td></td>
                 <td></td>

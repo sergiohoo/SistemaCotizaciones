@@ -201,6 +201,8 @@
                             <select asp-for="Cotizacion.MaterialesCotizacion[i-1].TipoMaterial" class="form-control small mTipo">
                                 <option value="SW" selected="selected">SW</option>
                                 <option value="HW">HW</option>
+                                <option value="SW-BT">SW-BT</option>
+                                <option value="HW-BT">HW-BT</option>
                             </select>
                         </td>
                         <td><input asp-for="Cotizacion.MaterialesCotizacion[i-1].NumeroSerie" class="form-control small mNumeroSerie" style="text-transform:uppercase" /></td>
@@ -227,6 +229,8 @@
                             <select asp-for="Cotizacion.MaterialesCotizacion[i-1].TipoMaterial" class="form-control small mTipo">
                                 <option value="SW">SW</option>
                                 <option value="HW">HW</option>
+                                <option value="SW-BT">SW-BT</option>
+                                <option value="HW-BT">HW-BT</option>
                             </select>
                         </td>
                         <td><input asp-for="Cotizacion.MaterialesCotizacion[i-1].NumeroSerie" class="form-control small mNumeroSerie" style="text-transform:uppercase" /></td>
@@ -324,16 +328,28 @@
             var precioFoB = precioUnitario * (1 - descuento / 100);
 
             var precioInternacion = 0;
-            if (tipo == "SW") {
-                precioInternacion = precioFoB * (1 - impuesto / 100);
-            }
-            else if (tipo == "HW") {
+            
+            if (tipo == "SW" || tipo == "SW-BT") {
                 precioInternacion = precioFoB / (1 + impuesto / 100);
             }
+            else if (tipo == "HW" || tipo == "HW-BT") {
+                precioInternacion = precioFoB * (1 - impuesto / 100);
+            }
 
-            precioCliente = (precioInternacion * (1 + margen / 100)).toFixed(2);
+            if((tipo == "SW" || tipo == "HW"))
+            {
+                precioCliente = (precioInternacion * (1 + margen / 100)).toFixed(2);
 
-            totalNeto = (precioInternacion * (1 + margen / 100) * cantidad).toFixed(2);
+                totalNeto = (precioInternacion * (1 + margen / 100) * cantidad).toFixed(2);
+            }
+            else if ((tipo == "SW-BT" || tipo == "HW-BT"))
+            {
+                precioCliente = (precioInternacion / (margen / 100)).toFixed(2);
+
+                totalNeto = (precioInternacion / (margen / 100) * cantidad).toFixed(2);
+            }
+
+            
 
             if (precioCliente > 0 && totalNeto > 0) {
                 tr.find(".mPrecioCliente").val(precioCliente);

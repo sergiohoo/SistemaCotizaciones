@@ -202,6 +202,12 @@ namespace SistemaCotizaciones.Controllers
 
                         decimal? unoPorcientoFinanciero = precioFob * 1 / 100;
                         decimal? costoTotal = interCompany + unoPorcientoFinanciero + montoInternacion + precioFob;
+                        
+                        // TIPO DE COTIZACIÓN DIRECTA:
+                        if (cotizacion.TipoCotizacionId == 1)
+                        {
+                            costoTotal = unoPorcientoFinanciero + montoInternacion + precioFob;
+                        }
 
                         decimal? costoFinalTotal = costoTotal * material.Cantidad;
 
@@ -293,7 +299,14 @@ namespace SistemaCotizaciones.Controllers
                         }
 
                         decimal? unoPorcientoFinanciero = precioFob * 1 / 100;
+
                         decimal? costoTotal = interCompany + unoPorcientoFinanciero + montoInternacion + precioFob;
+                        
+                        // TIPO DE COTIZACIÓN DIRECTA:
+                        if(cotizacion.TipoCotizacionId == 1)
+                        {
+                            costoTotal = unoPorcientoFinanciero + montoInternacion + precioFob;
+                        }
 
                         decimal? costoFinalTotal = costoTotal * material.Cantidad;
 
@@ -452,6 +465,12 @@ namespace SistemaCotizaciones.Controllers
 
                             decimal? unoPorcientoFinanciero = precioFob * 1 / 100;
                             decimal? costoTotal = interCompany + unoPorcientoFinanciero + montoInternacion + precioFob;
+                            
+                            // TIPO DE COTIZACIÓN DIRECTA:
+                            if (cotizacion.TipoCotizacionId == 1)
+                            {
+                                costoTotal = unoPorcientoFinanciero + montoInternacion + precioFob;
+                            }
 
                             decimal? costoFinalTotal = costoTotal * material.Cantidad;
 
