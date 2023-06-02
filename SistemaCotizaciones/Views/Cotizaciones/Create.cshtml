@@ -355,9 +355,9 @@
                 totalNeto = (precioInternacion * (1 + margen / 100) * cantidad).toFixed(2);
             }
             else if ((tipo == "SW-BT" || tipo == "HW-BT")) {
-                precioCliente = (precioInternacion / (margen / 100)).toFixed(2);
+                precioCliente = (precioInternacion / (1 - margen / 100)).toFixed(2);
 
-                totalNeto = (precioInternacion / (margen / 100) * cantidad).toFixed(2);
+                totalNeto = (precioInternacion / (1- margen / 100) * cantidad).toFixed(2);
 
                 //console.log("Precio Cliente = (" + precioInternacion + "/(" + margen + "/100)) = " + precioCliente);
                 //console.log("Total Neto = (" + precioInternacion + "/(" + margen + "/100)*" + cantidad + ") = " + precioCliente);
