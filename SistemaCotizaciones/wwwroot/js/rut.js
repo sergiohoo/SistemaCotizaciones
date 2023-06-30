@@ -84,7 +84,7 @@ function getCheckDigit(input) {
 $(function () {
     $("#Rut").on("keyup", function () {
         var rutField = format($(this).val());
-        //console.log(rutField);
+        console.log(rutField);
 
         if (validate(rutField)) {
             $('#Rut').valid(true);

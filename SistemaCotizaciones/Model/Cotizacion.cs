@@ -37,21 +37,25 @@ namespace SistemaCotizaciones.Model
         public TipoCompra? TipoCompra { get; set; }
         [Display(Name = "Canal")]
         [Required(ErrorMessage = "Debe seleccionar un canal")]
+        [ForeignKey("Canal")]
         public int CanalId { get; set; }
         [Display(Name = "Canal")]
         public Canal? Canal { get; set; }
         [Display(Name = "Contacto canal")]
         [Required(ErrorMessage = "Debe seleccionar un contacto de canal")]
+        [ForeignKey("ContactoCanal")]
         public int ContactoCanalId { get; set; }
         [Display(Name = "Contacto canal")]
         public ContactoCanal? ContactoCanal { get; set; }
         [Display(Name = "Cliente final")]
         [Required(ErrorMessage = "Debe seleccionar un cliente final")]
+        [ForeignKey("ClienteFinal")]
         public int ClienteFinalId { get; set; }
         [Display(Name = "Cliente final")]
         public ClienteFinal? ClienteFinal { get; set; }
         [Required(ErrorMessage = "Debe seleccionar un contacto de cliente final")]
         [Display(Name = "Contacto cliente final")]
+        [ForeignKey("ContactoClienteFinal")]
         public int ContactoClienteFinalId { get; set; }
         [Display(Name = "Contacto cliente final")]
         public ContactoClienteFinal? ContactoClienteFinal { get; set; }
@@ -70,6 +74,17 @@ namespace SistemaCotizaciones.Model
         public decimal TotalIVA { get; set; }
 
         public List<MaterialCotizacion>? MaterialesCotizacion { get; set; }
+
+        [NotMapped]
+        public Material? nuevoMaterial { get; set; }
+        [NotMapped]
+        public Canal? nuevoCanal { get; set; }
+        [NotMapped]
+        public ContactoCanal? nuevoContactoCanal { get; set; }
+        [NotMapped]
+        public ClienteFinal? nuevoClienteFinal { get; set; }
+        [NotMapped]
+        public ContactoClienteFinal? nuevoContactoClienteFinal { get; set; }
 
     }
 }

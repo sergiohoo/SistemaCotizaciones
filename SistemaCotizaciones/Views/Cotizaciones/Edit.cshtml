@@ -136,6 +136,9 @@
             </div>
             <div class="form-group col-md-6 col-sm-12">
                 <label asp-for="Cotizacion.CanalId" class="control-label"></label>
+                <button type="button" data-toggle="modal" data-target="#modalCanal" class="btn btn-transparent text-success font-weight-bold p-0 mb-2">
+                    +
+                </button>
                 <select asp-for="Cotizacion.CanalId" class="form-control selectpicker" data-live-search="true" asp-items="ViewBag.CanalId">
                     <option value="">Seleccione canal</option>
                 </select>
@@ -143,6 +146,9 @@
             </div>
             <div class="form-group col-md-6 col-sm-12">
                 <label asp-for="Cotizacion.ContactoCanalId" class="control-label"></label>
+                <button type="button" data-toggle="modal" data-target="#modalContactoCanal" class="btn btn-transparent text-success font-weight-bold p-0 mb-2">
+                    +
+                </button>
                 <select asp-for="Cotizacion.ContactoCanalId" class="form-control selectpicker" data-live-search="true" asp-items="ViewBag.ContactoCanalId">
                     <option value="">Seleccione contacto</option>
                 </select>
@@ -150,6 +156,9 @@
             </div>
             <div class="form-group col-md-6 col-sm-12">
                 <label asp-for="Cotizacion.ClienteFinalId" class="control-label"></label>
+                <button type="button" data-toggle="modal" data-target="#modalClienteFinal" class="btn btn-transparent text-success font-weight-bold p-0 mb-2">
+                    +
+                </button>
                 <select asp-for="Cotizacion.ClienteFinalId" class="form-control selectpicker" data-live-search="true" asp-items="ViewBag.ClienteFinalId">
                     <option value="">Seleccione cliente final</option>
                 </select>
@@ -157,6 +166,9 @@
             </div>
             <div class="form-group col-md-6 col-sm-12">
                 <label asp-for="Cotizacion.ContactoClienteFinalId" class="control-label"></label>
+                <button type="button" data-toggle="modal" data-target="#modalContactoClienteFinal" class="btn btn-transparent text-success font-weight-bold p-0 mb-2">
+                    +
+                </button>
                 <select asp-for="Cotizacion.ContactoClienteFinalId" class="form-control selectpicker" data-live-search="true" asp-items="ViewBag.ContactoClienteFinalId">
                     <option value="">Seleccione contacto</option>
                 </select>
@@ -181,7 +193,11 @@
         <table id="tablaMateriales" class="table table-condensed table-striped table-bordered small">
             <tr>
                 <th></th>
-                <th>MATERIAL</th>
+                <th style="white-space:nowrap;">
+                    MATERIAL<button type="button" class="btn btn-transparent text-success font-weight-bold p-0 ml-2 mb-1" data-toggle="modal" data-target="#modalMaterial">
+                        +
+                    </button>
+                </th>
                 <th class="text-center">SW/HW</th>
                 <th class="text-center" style="min-width:200px;">S/N</th>
                 <th class="text-right">CANT</th>
@@ -321,6 +337,254 @@
     </div>
 </div>
 
+<div class="modal fade" id="modalMaterial" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nuevo material</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formMaterial" class="row">
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoM.Sku" class="control-label"></label>
+                        <input asp-for="nuevoM.Sku" class="form-control" />
+                        <span asp-validation-for="nuevoM.Sku" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-9 col-sm-12">
+                        <label asp-for="nuevoM.Descripcion" class="control-label"></label>
+                        <input asp-for="nuevoM.Descripcion" class="form-control" />
+                        <span asp-validation-for="nuevoM.Descripcion" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoM.MaterialSap" class="control-label"></label>
+                        <input asp-for="nuevoM.MaterialSap" class="form-control" />
+                        <span asp-validation-for="nuevoM.MaterialSap" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoM.PrecioUnitario" class="control-label"></label>
+                        <input asp-for="nuevoM.PrecioUnitario" class="form-control text-right" />
+                        <span asp-validation-for="nuevoM.PrecioUnitario" class="text-danger"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" onclick="addMaterial();" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalCanal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nuevo canal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formCanal" class="row">
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoC.Rut" class="control-label"></label>
+                        <input asp-for="nuevoC.Rut" class="form-control campo-rut" onkeypress="return soloRUT(event);" />
+                        <span asp-validation-for="nuevoC.Rut" class="text-danger"></span>
+                        <span id="nuevoC_RutCustomError" class="text-danger field-validation-valid" style="display:none;"><span class="">El RUT ingresado no es válido</span></span>
+                    </div>
+                    <div class="form-group col-md-9 col-sm-12">
+                        <label asp-for="nuevoC.RazonSocial" class="control-label"></label>
+                        <input asp-for="nuevoC.RazonSocial" class="form-control" onkeypress="return soloValidos(event);" style="text-transform:uppercase;" />
+                        <span asp-validation-for="nuevoC.RazonSocial" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoC.Telefono" class="control-label"></label>
+                        <input asp-for="nuevoC.Telefono" class="form-control" onkeypress="return soloTelefono(event);" />
+                        <span asp-validation-for="nuevoC.Telefono" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-9 col-sm-12">
+                        <label asp-for="nuevoC.Direccion" class="control-label"></label>
+                        <input asp-for="nuevoC.Direccion" class="form-control" onkeypress="return soloValidos(event);" />
+                        <span asp-validation-for="nuevoC.Direccion" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoC.Email" class="control-label"></label>
+                        <input type="email" asp-for="nuevoC.Email" class="form-control" />
+                        <span asp-validation-for="nuevoC.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoC.NumeroClienteIngram" class="control-label"></label>
+                        <input asp-for="nuevoC.NumeroClienteIngram" class="form-control" />
+                        <span asp-validation-for="nuevoC.NumeroClienteIngram" class="text-danger"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" onclick="addCanal();" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalClienteFinal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nuevo cliente final</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formClienteFinal" class="row">
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoCF.Rut" class="control-label"></label>
+                        <input asp-for="nuevoCF.Rut" class="form-control campo-rut" onkeypress="return soloRUT(event);" />
+                        <span asp-validation-for="nuevoCF.Rut" class="text-danger"></span>
+                        <span id="nuevoCF_RutCustomError" class="text-danger field-validation-valid" style="display:none;"><span class="">El RUT ingresado no es válido</span></span>
+                    </div>
+                    <div class="form-group col-md-9 col-sm-12">
+                        <label asp-for="nuevoCF.RazonSocial" class="control-label"></label>
+                        <input asp-for="nuevoCF.RazonSocial" class="form-control" onkeypress="return soloValidos(event);" />
+                        <span asp-validation-for="nuevoCF.RazonSocial" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoCF.Telefono" class="control-label"></label>
+                        <input asp-for="nuevoCF.Telefono" class="form-control" onkeypress="return soloTelefono(event);" />
+                        <span asp-validation-for="nuevoCF.Telefono" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-9 col-sm-12">
+                        <label asp-for="nuevoCF.Direccion" class="control-label"></label>
+                        <input asp-for="nuevoCF.Direccion" class="form-control" onkeypress="return soloValidos(event);" />
+                        <span asp-validation-for="nuevoCF.Direccion" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoCF.Email" class="control-label"></label>
+                        <input type="email" asp-for="nuevoCF.Email" class="form-control" />
+                        <span asp-validation-for="nuevoCF.Email" class="text-danger"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" onclick="addClienteFinal();" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalContactoCanal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nuevo contacto canal</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formContactoCanal" class="row">
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoCC.CanalId" class="control-label"></label>
+                        <select asp-for="nuevoCC.CanalId" class="form-control" asp-items="ViewBag.CanalId">
+                            <option value="">Seleccione canal</option>
+                        </select>
+                    </div>
+                    <div class="offset-md-9"></div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoCC.Rut" class="control-label"></label>
+                        <input asp-for="nuevoCC.Rut" class="form-control campo-rut" onkeypress="return soloRUT(event);" />
+                        <span asp-validation-for="nuevoCC.Rut" class="text-danger"></span>
+                        <span id="nuevoCC_RutCustomError" class="text-danger field-validation-valid" style="display:none;"><span class="">El RUT ingresado no es válido</span></span>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoCC.Nombre" class="control-label"></label>
+                        <input asp-for="nuevoCC.Nombre" class="form-control" onkeypress="return soloValidos(event);" />
+                        <span asp-validation-for="nuevoCC.Nombre" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoCC.Apellido" class="control-label"></label>
+                        <input asp-for="nuevoCC.Apellido" class="form-control" onkeypress="return soloValidos(event);" />
+                        <span asp-validation-for="nuevoCC.Apellido" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoCC.Email" class="control-label"></label>
+                        <input type="email" asp-for="nuevoCC.Email" class="form-control" />
+                        <span asp-validation-for="nuevoCC.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoCC.Telefono" class="control-label"></label>
+                        <input asp-for="nuevoCC.Telefono" class="form-control" onkeypress="return soloTelefono(event);" />
+                        <span asp-validation-for="nuevoCC.Telefono" class="text-danger"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" onclick="addContactoCanal();" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalContactoClienteFinal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Nuevo contacto cliente final</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="formContactoClienteFinal" class="row">
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoCCF.ClienteFinalId" class="control-label"></label>
+                        <select asp-for="nuevoCCF.ClienteFinalId" class="form-control" asp-items="ViewBag.ClienteFinalId">
+                            <option value="">Seleccione cliente final</option>
+                        </select>
+                    </div>
+                    <div class="offset-md-9"></div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoCCF.Rut" class="control-label"></label>
+                        <input asp-for="nuevoCCF.Rut" class="form-control campo-rut" onkeypress="return soloRUT(event);" />
+                        <span asp-validation-for="nuevoCCF.Rut" class="text-danger"></span>
+                        <span id="nuevoCCF_RutCustomError" class="text-danger field-validation-valid" style="display:none;"><span class="">El RUT ingresado no es válido</span></span>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoCCF.Nombre" class="control-label"></label>
+                        <input asp-for="nuevoCCF.Nombre" class="form-control" onkeypress="return soloValidos(event);" />
+                        <span asp-validation-for="nuevoCCF.Nombre" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoCCF.Apellido" class="control-label"></label>
+                        <input asp-for="nuevoCCF.Apellido" class="form-control" onkeypress="return soloValidos(event);" />
+                        <span asp-validation-for="nuevoCCF.Apellido" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoCCF.Email" class="control-label"></label>
+                        <input type="email" asp-for="nuevoCCF.Email" class="form-control" />
+                        <span asp-validation-for="nuevoCCF.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-group col-md-3 col-sm-12">
+                        <label asp-for="nuevoCCF.Telefono" class="control-label"></label>
+                        <input asp-for="nuevoCCF.Telefono" class="form-control" onkeypress="return soloTelefono(event);" />
+                        <span asp-validation-for="nuevoCCF.Telefono" class="text-danger"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" onclick="addContactoClienteFinal();" class="btn btn-primary">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -329,7 +593,256 @@
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/validaciones.js"></script>
+<script src="~/js/rut.js"></script>
 <script>
+
+    function addMaterial() {
+        const form = document.getElementById("formMaterial");
+
+        const elements = new FormData(form);
+        const _object = Object.fromEntries(elements.entries());
+        const data = JSON.stringify(_object).replaceAll("nuevoM.", "");
+        const object = JSON.parse(data);
+
+        console.log(data);
+
+        $.ajax({
+            url: "/Cotizaciones/AddMaterial",
+            type: "GET",
+            data: "json=" + data,
+            success: function (resId) {
+                console.log(resId);
+                var selects = $(".mMaterial");
+                for (i = 0; i < selects.length; i++) {
+                    selects.eq(i).find("select").append(`<option value="${resId}">${object.Sku + " | " + object.Descripcion}</option>`);
+                    selects.eq(i).selectpicker("refresh");
+                }
+
+                $('#modalMaterial').modal('toggle');
+            },
+            error: function (error) {
+            }
+        });
+    }
+
+    function addCanal() {
+        const form = document.getElementById("formCanal");
+
+        const elements = new FormData(form);
+        const _object = Object.fromEntries(elements.entries());
+        const data = JSON.stringify(_object).replaceAll("nuevoC.", "");
+        const object = JSON.parse(data);
+
+        //console.log(object);
+
+        $.ajax({
+            url: "/Cotizaciones/AddCanal",
+            type: "GET",
+            data: "json=" + data,
+            success: function (resId) {
+                var select = $("#Cotizacion_CanalId");
+                var name = (object.RazonSocial).toUpperCase();
+                select.append(`<option value="${resId}">${name}</option>`);
+                //select.find("select").append(`<option value="${resId}">${object.RazonSocial}</option>`);
+                select.val(resId);
+                select.selectpicker("refresh");
+
+                var select2 = $("#nuevoCC_CanalId");
+                select2.append(`<option value="${resId}">${name}</option>`);
+                select2.val(resId);
+
+                $('#modalCanal').modal('toggle');
+            },
+            error: function (error) {
+            }
+        });
+    }
+
+    function addContactoCanal() {
+        const form = document.getElementById("formContactoCanal");
+
+        const elements = new FormData(form);
+        const _object = Object.fromEntries(elements.entries());
+        const data = JSON.stringify(_object).replaceAll("nuevoCC.", "");
+        const object = JSON.parse(data);
+
+        //console.log(object);
+
+        $.ajax({
+            url: "/Cotizaciones/AddContactoCanal",
+            type: "GET",
+            data: "json=" + data,
+            success: function (resId) {
+                var select = $("#Cotizacion_ContactoCanalId");
+                var name = object.Nombre + " " + object.Apellido;
+                select.append(`<option value="${resId}">${name}</option>`);
+                select.val(resId);
+                select.selectpicker("refresh");
+                $('#modalContactoCanal').modal('toggle');
+            },
+            error: function (error) {
+            }
+        });
+    }
+
+    function addClienteFinal() {
+        const form = document.getElementById("formClienteFinal");
+
+        const elements = new FormData(form);
+        const _object = Object.fromEntries(elements.entries());
+        const data = JSON.stringify(_object).replaceAll("nuevoCF.", "");
+        const object = JSON.parse(data);
+
+        //console.log(object);
+
+        $.ajax({
+            url: "/Cotizaciones/AddClienteFinal",
+            type: "GET",
+            data: "json=" + data,
+            success: function (resId) {
+                var select = $("#Cotizacion_ClienteFinalId");
+                var name = (object.RazonSocial).toUpperCase();
+                select.append(`<option value="${resId}">${name}</option>`);
+                select.val(resId);
+                select.selectpicker("refresh");
+
+                var select2 = $("#nuevoCCF_ClienteFinalId");
+                select2.append(`<option value="${resId}">${name}</option>`);
+                select2.val(resId);
+
+                $('#modalClienteFinal').modal('toggle');
+            },
+            error: function (error) {
+            }
+        });
+    }
+
+    function addContactoClienteFinal() {
+        const form = document.getElementById("formContactoClienteFinal");
+
+        const elements = new FormData(form);
+        const _object = Object.fromEntries(elements.entries());
+        const data = JSON.stringify(_object).replaceAll("nuevoCCF.", "");
+        const object = JSON.parse(data);
+
+        //console.log(object);
+
+        $.ajax({
+            url: "/Cotizaciones/AddContactoClienteFinal",
+            type: "GET",
+            data: "json=" + data,
+            success: function (resId) {
+                var select = $("#Cotizacion_ContactoClienteFinalId");
+                var name = object.Nombre + " " + object.Apellido;
+                select.append(`<option value="${resId}">${name}</option>`);
+                select.val(resId);
+                select.selectpicker("refresh");
+                $('#modalContactoClienteFinal').modal('toggle');
+            },
+            error: function (error) {
+            }
+        });
+    }
+
+    $(function () {
+        $("#nuevoC_Rut").on("keyup", function () {
+            var rutField = format($(this).val());
+            //console.log(rutField);
+
+            if (validate(rutField)) {
+                $('#nuevoC_Rut').valid(true);
+                //console.log("válido");
+                $("#nuevoC_RutCustomError").removeClass('field-validation-error');
+                $("#nuevoC_RutCustomError").addClass('field-validation-valid');
+                $("#nuevoC_RutCustomError").css("display", "none");
+            }
+            else {
+                $('#nuevoC_Rut').valid(false);
+                //console.log("no válido");
+                $("#nuevoC_RutCustomError").removeClass('field-validation-valid');
+                $("#nuevoC_RutCustomError").addClass('field-validation-error');
+                $("#nuevoC_RutCustomError").css("display", "block");
+            }
+
+            $(this).val(rutField);
+
+        });
+    });
+
+    $(function () {
+        $("#nuevoCC_Rut").on("keyup", function () {
+            var rutField = format($(this).val());
+            //console.log(rutField);
+
+            if (validate(rutField)) {
+                $('#nuevoCC_Rut').valid(true);
+                //console.log("válido");
+                $("#nuevoCC_RutCustomError").removeClass('field-validation-error');
+                $("#nuevoCC_RutCustomError").addClass('field-validation-valid');
+                $("#nuevoCC_RutCustomError").css("display", "none");
+            }
+            else {
+                $('#nuevoCC_Rut').valid(false);
+                //console.log("no válido");
+                $("#nuevoCC_RutCustomError").removeClass('field-validation-valid');
+                $("#nuevoCC_RutCustomError").addClass('field-validation-error');
+                $("#nuevoCC_RutCustomError").css("display", "block");
+            }
+
+            $(this).val(rutField);
+
+        });
+    });
+
+    $(function () {
+        $("#nuevoCF_Rut").on("keyup", function () {
+            var rutField = format($(this).val());
+            //console.log(rutField);
+
+            if (validate(rutField)) {
+                $('#nuevoCF_Rut').valid(true);
+                //console.log("válido");
+                $("#nuevoCF_RutCustomError").removeClass('field-validation-error');
+                $("#nuevoCF_RutCustomError").addClass('field-validation-valid');
+                $("#nuevoCF_RutCustomError").css("display", "none");
+            }
+            else {
+                $('#nuevoCF_Rut').valid(false);
+                //console.log("no válido");
+                $("#nuevoCF_RutCustomError").removeClass('field-validation-valid');
+                $("#nuevoCF_RutCustomError").addClass('field-validation-error');
+                $("#nuevoCF_RutCustomError").css("display", "block");
+            }
+
+            $(this).val(rutField);
+
+        });
+    });
+
+    $(function () {
+        $("#nuevoCCF_Rut").on("keyup", function () {
+            var rutField = format($(this).val());
+            //console.log(rutField);
+
+            if (validate(rutField)) {
+                $('#nuevoCCF_Rut').valid(true);
+                //console.log("válido");
+                $("#nuevoCCF_RutCustomError").removeClass('field-validation-error');
+                $("#nuevoCCF_RutCustomError").addClass('field-validation-valid');
+                $("#nuevoCCF_RutCustomError").css("display", "none");
+            }
+            else {
+                $('#nuevoCCF_Rut').valid(false);
+                //console.log("no válido");
+                $("#nuevoCCF_RutCustomError").removeClass('field-validation-valid');
+                $("#nuevoCCF_RutCustomError").addClass('field-validation-error');
+                $("#nuevoCCF_RutCustomError").css("display", "block");
+            }
+
+            $(this).val(rutField);
+
+        });
+    });
 
     function GuardaVersion() {
         $("#formCotizacion").attr("action","/Cotizaciones/GuardaVersion");

@@ -19,10 +19,10 @@ namespace SistemaCotizaciones.Controllers
             _context = context;
         }
 
-        public IActionResult MaterialDelete(int id,int idCotizacion)
+        public IActionResult MaterialDelete(int id, int idCotizacion)
         {
             var materialDelete = _context.MaterialesCotizacion.Where(m => m.CotizacionId == idCotizacion && m.MaterialCotizacionId == id).FirstOrDefault();
-            if(materialDelete != null)
+            if (materialDelete != null)
             {
                 _context.Remove(materialDelete);
                 _context.SaveChanges();
@@ -90,6 +90,95 @@ namespace SistemaCotizaciones.Controllers
         {
             var contactos = _context.ContactosClientesFinales.Where(c => c.ClienteFinalId == clienteId).ToList();
             var result = new JsonResult(contactos);
+            return result;
+        }
+
+        [HttpGet]
+        public JsonResult AddMaterial(string json)
+        {
+            var result = new JsonResult("0");
+            if (json != "")
+            {
+                var nMaterial = Newtonsoft.Json.JsonConvert.DeserializeObject<Material>(json);
+                if (nMaterial != null)
+                {
+                    _context.Materiales.Add(nMaterial);
+                    _context.SaveChanges();
+                    result = new JsonResult(nMaterial.MaterialId);
+                }
+            }
+            return result;
+        }
+
+        [HttpGet]
+        public JsonResult AddCanal(string json)
+        {
+            var result = new JsonResult("0");
+            if (json != "")
+            {
+                var nCanal = Newtonsoft.Json.JsonConvert.DeserializeObject<Canal>(json);
+                if (nCanal != null)
+                {
+                    nCanal.RazonSocial = nCanal.RazonSocial.ToUpper();
+
+                    _context.Canales.Add(nCanal);
+                    _context.SaveChanges();
+                    result = new JsonResult(nCanal.CanalId);
+                }
+            }
+            return result;
+        }
+
+        [HttpGet]
+        public JsonResult AddContactoCanal(string json)
+        {
+            var result = new JsonResult("0");
+            if (json != "")
+            {
+                var nContactoCanal = Newtonsoft.Json.JsonConvert.DeserializeObject<ContactoCanal>(json);
+                if (nContactoCanal != null)
+                {
+                    _context.ContactosCanales.Add(nContactoCanal);
+                    _context.SaveChanges();
+                    result = new JsonResult(nContactoCanal.ContactoCanalId);
+                }
+            }
+            return result;
+        }
+
+        [HttpGet]
+        public JsonResult AddClienteFinal(string json)
+        {
+            var result = new JsonResult("0");
+            if (json != "")
+            {
+                var nClienteFinal = Newtonsoft.Json.JsonConvert.DeserializeObject<ClienteFinal>(json);
+                if (nClienteFinal != null)
+                {
+                    nClienteFinal.RazonSocial = nClienteFinal.RazonSocial.ToUpper();
+
+                    _context.ClientesFinales.Add(nClienteFinal);
+                    _context.SaveChanges();
+                    result = new JsonResult(nClienteFinal.ClienteFinalId);
+                }
+            }
+            return result;
+        }
+
+        [HttpGet]
+        public JsonResult AddContactoClienteFinal(string json)
+        {
+            var result = new JsonResult("0");
+            if (json != "")
+            {
+                var nContactoClienteFinal = Newtonsoft.Json.JsonConvert.DeserializeObject<ContactoClienteFinal>(json);
+                if (nContactoClienteFinal != null)
+                {
+                    _context.ContactosClientesFinales.Add(nContactoClienteFinal);
+                    _context.SaveChanges();
+                    result = new JsonResult(nContactoClienteFinal.ContactoClienteFinalId);
+                }
+            }
             return result;
         }
 
@@ -164,7 +253,7 @@ namespace SistemaCotizaciones.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Cotizacion cotizacion, Quote quote)
         {
-            if(cotizacion != null && quote != null)
+            if (cotizacion != null && quote != null)
             {
                 quote.Vigencia = true;
                 _context.Add(quote);
@@ -202,7 +291,7 @@ namespace SistemaCotizaciones.Controllers
 
                         decimal? unoPorcientoFinanciero = precioFob * 1 / 100;
                         decimal? costoTotal = interCompany + unoPorcientoFinanciero + montoInternacion + precioFob;
-                        
+
                         // TIPO DE COTIZACIÓN DIRECTA:
                         if (cotizacion.TipoCotizacionId == 1)
                         {
@@ -213,7 +302,7 @@ namespace SistemaCotizaciones.Controllers
 
                         decimal? totalSale = material.TotalNeto;
 
-                        decimal? margen = 100*(totalSale - costoFinalTotal) / totalSale;
+                        decimal? margen = 100 * (totalSale - costoFinalTotal) / totalSale;
 
                         material.PrecioFob = precioFob;
                         material.Intercompany = interCompany;
@@ -235,7 +324,7 @@ namespace SistemaCotizaciones.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            
+
             ViewData["CanalId"] = new SelectList(_context.Canales, "CanalId", nameof(Canal.RazonSocial), cotizacion.CanalId);
             ViewData["ContactoCanalId"] = new SelectList(_context.ContactosCanales.Where(c => c.CanalId == cotizacion.CanalId), "ContactoCanalId", nameof(ContactoCanal.Nombre), cotizacion.ContactoCanalId);
             ViewData["ClienteFinalId"] = new SelectList(_context.ClientesFinales, "ClienteFinalId", nameof(ClienteFinal.RazonSocial), cotizacion.ClienteFinalId);
@@ -255,7 +344,7 @@ namespace SistemaCotizaciones.Controllers
             if (cotizacion != null && quote != null)
             {
                 //cotizacion.CanalId = 0;
-                foreach(var material in cotizacion.MaterialesCotizacion)
+                foreach (var material in cotizacion.MaterialesCotizacion)
                 {
                     material.MaterialCotizacionId = 0;
                     material.CotizacionId = 0;
@@ -301,9 +390,9 @@ namespace SistemaCotizaciones.Controllers
                         decimal? unoPorcientoFinanciero = precioFob * 1 / 100;
 
                         decimal? costoTotal = interCompany + unoPorcientoFinanciero + montoInternacion + precioFob;
-                        
+
                         // TIPO DE COTIZACIÓN DIRECTA:
-                        if(cotizacion.TipoCotizacionId == 1)
+                        if (cotizacion.TipoCotizacionId == 1)
                         {
                             costoTotal = unoPorcientoFinanciero + montoInternacion + precioFob;
                         }
@@ -356,7 +445,7 @@ namespace SistemaCotizaciones.Controllers
             }
 
             var cotizacion = await _context.Cotizaciones.Where(c => c.CotizacionId == id).Include(c => c.MaterialesCotizacion).ThenInclude(m => m.Material).FirstOrDefaultAsync();
-            
+
             var quote = await _context.Quotes.Where(q => q.QuoteId == cotizacion.QuoteId).FirstOrDefaultAsync();
             if (cotizacion == null || quote == null)
             {
@@ -392,7 +481,7 @@ namespace SistemaCotizaciones.Controllers
             ViewData["Materiales"] = new SelectList(selectListMateriales, "Value", "Text");
 
             var materiales = new List<MaterialCotizacion>();
-            foreach(var material in cotizacion.MaterialesCotizacion)
+            foreach (var material in cotizacion.MaterialesCotizacion)
             {
                 materiales.Add(material);
             }
@@ -449,23 +538,23 @@ namespace SistemaCotizaciones.Controllers
                             decimal? descuento = material.DescuentoPorcentaje;
 
                             decimal precioFob = 0;
-                            decimal.TryParse((precioUnitario * (1 - descuento / 100))?.ToString("N2"),out precioFob);
+                            decimal.TryParse((precioUnitario * (1 - descuento / 100))?.ToString("N2"), out precioFob);
 
-                            decimal? interCompany = precioFob * 2/1000;
-                            if(material.TipoMaterial == "HW")
+                            decimal? interCompany = precioFob * 2 / 1000;
+                            if (material.TipoMaterial == "HW")
                             {
                                 interCompany = precioFob * 8 / 1000;
                             }
 
-                            decimal? montoInternacion = precioFob * material.ImpuestoDuty * 1/100;
-                            if(material.TipoMaterial == "SW")
+                            decimal? montoInternacion = precioFob * material.ImpuestoDuty * 1 / 100;
+                            if (material.TipoMaterial == "SW")
                             {
                                 montoInternacion = 0;
                             }
 
                             decimal? unoPorcientoFinanciero = precioFob * 1 / 100;
                             decimal? costoTotal = interCompany + unoPorcientoFinanciero + montoInternacion + precioFob;
-                            
+
                             // TIPO DE COTIZACIÓN DIRECTA:
                             if (cotizacion.TipoCotizacionId == 1)
                             {
@@ -610,7 +699,7 @@ namespace SistemaCotizaciones.Controllers
             if (cotizacion != null)
             {
                 var materialesDelete = _context.MaterialesCotizacion.Where(m => m.CotizacionId == id).ToList();
-                foreach(var materialDelete in materialesDelete)
+                foreach (var materialDelete in materialesDelete)
                 {
                     _context.Remove(materialDelete);
                 }

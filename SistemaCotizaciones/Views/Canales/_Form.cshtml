@@ -1,0 +1,33 @@
+﻿@model SistemaCotizaciones.Model.Canal
+
+<div class="form-group col-md-3 col-sm-12">
+    <label asp-for="Rut" class="control-label"></label>
+    <input asp-for="Rut" class="form-control campo-rut" onkeypress="return soloRUT(event);" />
+    <span asp-validation-for="Rut" class="text-danger"></span>
+    <span id="RutCanalCustomError" class="text-danger field-validation-valid" style="display:none;"><span class="">El RUT ingresado no es válido</span></span>
+</div>
+<div class="form-group col-md-9 col-sm-12">
+    <label asp-for="RazonSocial" class="control-label"></label>
+    <input asp-for="RazonSocial" class="form-control" onkeypress="return soloValidos(event);" style="text-transform:uppercase;" />
+    <span asp-validation-for="RazonSocial" class="text-danger"></span>
+</div>
+<div class="form-group col-md-3 col-sm-12">
+    <label asp-for="Telefono" class="control-label"></label>
+    <input asp-for="Telefono" class="form-control" onkeypress="return soloTelefono(event);" />
+    <span asp-validation-for="Telefono" class="text-danger"></span>
+</div>
+<div class="form-group col-md-9 col-sm-12">
+    <label asp-for="Direccion" class="control-label"></label>
+    <input asp-for="Direccion" class="form-control" onkeypress="return soloValidos(event);" />
+    <span asp-validation-for="Direccion" class="text-danger"></span>
+</div>
+<div class="form-group col-md-3 col-sm-12">
+    <label asp-for="Email" class="control-label"></label>
+    <input type="email" asp-for="Email" class="form-control" />
+    <span asp-validation-for="Email" class="text-danger"></span>
+</div>
+<div class="form-group col-md-3 col-sm-12">
+    <label asp-for="NumeroClienteIngram" class="control-label"></label>
+    <input asp-for="NumeroClienteIngram" class="form-control" />
+    <span asp-validation-for="NumeroClienteIngram" class="text-danger"></span>
+</div>
