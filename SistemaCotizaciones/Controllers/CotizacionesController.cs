@@ -219,7 +219,7 @@ namespace SistemaCotizaciones.Controllers
 
             var cotizacion = new Cotizacion();
             var materiales = new List<MaterialCotizacion>();
-            for (int i = 0; i < 90; i++)
+            for (int i = 0; i < 100; i++)
             {
                 var material = new MaterialCotizacion
                 {
@@ -309,6 +309,7 @@ namespace SistemaCotizaciones.Controllers
                         material.MontoInternacion = montoInternacion;
                         material.UnoPorcientoFinanciero = unoPorcientoFinanciero;
                         material.CostoTotal = costoTotal;
+                        material.TotalCompra = material.TotalCompra;
                         material.CostoFinalTotal = costoFinalTotal;
                         material.Margen = margen;
 
@@ -408,6 +409,7 @@ namespace SistemaCotizaciones.Controllers
                         material.MontoInternacion = montoInternacion;
                         material.UnoPorcientoFinanciero = unoPorcientoFinanciero;
                         material.CostoTotal = costoTotal;
+                        material.TotalCompra = material.TotalCompra;
                         material.CostoFinalTotal = costoFinalTotal;
                         material.Margen = margen;
 
@@ -486,7 +488,7 @@ namespace SistemaCotizaciones.Controllers
                 materiales.Add(material);
             }
 
-            for (int i = 0; i < 90 - cotizacion.MaterialesCotizacion.Count; i++)
+            for (int i = 0; i < 100 - cotizacion.MaterialesCotizacion.Count; i++)
             {
                 var material = new MaterialCotizacion
                 {
@@ -513,6 +515,7 @@ namespace SistemaCotizaciones.Controllers
         // POST: Cotizaciones/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [RequestFormLimits(ValueCountLimit = int.MaxValue)]
         [HttpPost]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Cotizacion cotizacion, Quote quote)
@@ -572,6 +575,7 @@ namespace SistemaCotizaciones.Controllers
                             material.MontoInternacion = montoInternacion;
                             material.UnoPorcientoFinanciero = unoPorcientoFinanciero;
                             material.CostoTotal = costoTotal;
+                            material.TotalCompra = material.TotalCompra;
                             material.CostoFinalTotal = costoFinalTotal;
                             material.Margen = margen;
 

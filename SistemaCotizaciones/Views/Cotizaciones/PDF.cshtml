@@ -107,6 +107,7 @@
             <td colspan="4">@Model.cotizacion.Canal.RazonSocial</td>
             <td>@DateTime.Now.ToString("dd MMM yyyy")</td>
             <td></td>
+            <td></td>
         </tr>
         <tr>
             <td></td>
@@ -155,7 +156,20 @@
                     <td style="white-space:nowrap; border:#999 1px solid;">@material.Material.Sku</td>
                     <td style="border:#999 1px solid;">@material.Material.Descripcion</td>
                     <td style="border:#999 1px solid;">@material.NumeroSerie</td>
-                    <td style="white-space:nowrap; border:#999 1px solid;" class="text-center">@material.FechaInicio?.ToString("dd/MM/yyyy").Replace("-","/") - @material.FechaTermino?.ToString("dd/MM/yyyy").Replace("-","/")</td>
+                    @{
+                        var fechaInicio = "";
+                        var fechaTermino = "";
+
+                        if(material.FechaInicio != null)
+                        {
+                            fechaInicio = material.FechaInicio?.ToString("dd/MM/yyyy").Replace("-", "/");
+                        }
+                        if(material.FechaTermino != null)
+                        {
+                            fechaTermino = material.FechaTermino?.ToString("dd/MM/yyyy").Replace("-", "/");
+                        }
+                    }
+                    <td style="white-space:nowrap; border:#999 1px solid;" class="text-center">@fechaInicio - @fechaTermino</td>
                     <td style="border:#999 1px solid;" class="text-right">@material.PrecioCliente?.ToString("N2")</td>
                     <td style="border:#999 1px solid;" class="text-right">@material.TotalNeto?.ToString("N2")</td>
                     <td></td>
@@ -173,6 +187,7 @@
             <td></td>
             <td style="border:#999 1px solid;">Neto</td>
             <td style="border:#999 1px solid;" class="text-right">@Model.cotizacion.TotalNeto.ToString("N2")</td>
+            <td></td>
         </tr>
         <tr>
             <td></td>
@@ -183,6 +198,7 @@
             <td></td>
             <td style="border:#999 1px solid;">IVA</td>
             <td style="border:#999 1px solid;" class="text-right">@iva.ToString("N2")</td>
+            <td></td>
         </tr>
         <tr>
             <td></td>
@@ -193,6 +209,7 @@
             <td></td>
             <td style="border:#999 1px solid;">TOTAL</td>
             <td style="border:#999 1px solid;" class="text-right">@Model.cotizacion.TotalIVA.ToString("N2")</td>
+            <td></td>
         </tr>
         <tr>
             <td>&nbsp;</td>
@@ -205,6 +222,40 @@
             <td>&nbsp;</td>
             <td>&nbsp;</td>
         </tr>
+
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td class="font-weight-bold">Observaciones:</td>
+            <td colspan="2">@Model.cotizacion.Observaciones</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+        </tr>
+
         <tr>
             <td>&nbsp;</td>
             <td colspan="2">
@@ -272,13 +323,11 @@
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-            <td>&nbsp;</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td colspan="3">- Precios y disponibilidad sujetos a cambios sin previo aviso</td>
-            <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -292,13 +341,11 @@
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-            <td>&nbsp;</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td colspan="3">- Tipo de cambio INGRAM al día de facturación de la mercadería</td>
-            <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -312,7 +359,6 @@
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-            <td>&nbsp;</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
@@ -322,13 +368,11 @@
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-            <td>&nbsp;</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td colspan="3">- Configuraciones de equipamiento deben ser validadas por el cliente previamente</td>
-            <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -353,13 +397,11 @@
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-            <td>&nbsp;</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td colspan="3">- RUT del cliente final</td>
-            <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -373,13 +415,11 @@
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-            <td>&nbsp;</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td colspan="3">- Dirección</td>
-            <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
@@ -393,7 +433,6 @@
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-            <td>&nbsp;</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
@@ -403,13 +442,11 @@
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-            <td>&nbsp;</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td colspan="3">- Email contacto</td>
-            <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>

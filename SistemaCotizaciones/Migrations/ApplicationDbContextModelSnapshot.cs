@@ -229,6 +229,9 @@ namespace SistemaCotizaciones.Migrations
                     b.Property<int>("FabricanteId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("FechaCotizacion")
+                        .HasColumnType("datetime2");
+
                     b.Property<decimal>("Margen")
                         .HasColumnType("decimal(18,2)");
 
@@ -244,6 +247,9 @@ namespace SistemaCotizaciones.Migrations
 
                     b.Property<int>("TipoCotizacionId")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("TotalCompra")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal>("TotalIVA")
                         .HasColumnType("decimal(18,2)");
@@ -388,6 +394,9 @@ namespace SistemaCotizaciones.Migrations
 
                     b.Property<string>("TipoMaterial")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("TotalCompra")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<decimal?>("TotalNeto")
                         .HasColumnType("decimal(18,2)");

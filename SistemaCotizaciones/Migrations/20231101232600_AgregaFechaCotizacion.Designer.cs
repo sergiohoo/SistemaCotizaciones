@@ -12,8 +12,8 @@ using SistemaCotizaciones.Model;
 namespace SistemaCotizaciones.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230621195432_CambiaNombresRut")]
-    partial class CambiaNombresRut
+    [Migration("20231101232600_AgregaFechaCotizacion")]
+    partial class AgregaFechaCotizacion
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,7 +48,7 @@ namespace SistemaCotizaciones.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RutCanal")
+                    b.Property<string>("Rut")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -81,7 +81,7 @@ namespace SistemaCotizaciones.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RutClienteFinal")
+                    b.Property<string>("Rut")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -155,7 +155,7 @@ namespace SistemaCotizaciones.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RutContactoClienteFinal")
+                    b.Property<string>("Rut")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -230,6 +230,9 @@ namespace SistemaCotizaciones.Migrations
 
                     b.Property<int>("FabricanteId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("FechaCotizacion")
+                        .HasColumnType("datetime2");
 
                     b.Property<decimal>("Margen")
                         .HasColumnType("decimal(18,2)");

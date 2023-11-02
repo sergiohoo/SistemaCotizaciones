@@ -68,10 +68,16 @@ namespace SistemaCotizaciones.Model
         [DisplayFormat(DataFormatString = "{N2}")]
         [ModelBinder(BinderType = typeof(DecimalBinder))]
         public decimal TotalNeto { get; set; }
+        [Display(Name = "Total compra")]
+        [DisplayFormat(DataFormatString = "{N2}")]
+        [ModelBinder(BinderType = typeof(DecimalBinder))]
+        public decimal TotalCompra { get; set; }
         [Display(Name = "Total con IVA")]
         [DisplayFormat(DataFormatString = "{N2}")]
         [ModelBinder(BinderType = typeof(DecimalBinder))]
         public decimal TotalIVA { get; set; }
+        [Display(Name ="Fecha cotización")]
+        public DateTime? FechaCotizacion { get; set; }
 
         public List<MaterialCotizacion>? MaterialesCotizacion { get; set; }
 

@@ -34,6 +34,10 @@ namespace SistemaCotizaciones.Model
         [DisplayFormat(DataFormatString = "{N2}")]
         [ModelBinder(BinderType = typeof(DecimalBinder))]
         public decimal? TotalNeto { get; set; }
+        [Display(Name = "Total compra")]
+        [DisplayFormat(DataFormatString = "{N2}")]
+        [ModelBinder(BinderType = typeof(DecimalBinder))]
+        public decimal? TotalCompra { get; set; }
         [Display(Name = "Descuento [%]")]
         [DisplayFormat(DataFormatString = "{N2}")]
         [ModelBinder(BinderType = typeof(DecimalBinder))]

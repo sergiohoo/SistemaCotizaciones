@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Localization;
+﻿using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.EntityFrameworkCore;
@@ -22,7 +23,13 @@ namespace SistemaCotizaciones
             .AddMvcOptions(opts =>
             {
                 opts.MaxModelBindingCollectionSize = int.MaxValue;
+                opts.MaxIAsyncEnumerableBufferLimit = int.MaxValue;
                 opts.ModelBinderProviders.Insert(0, new DecimalBinderProvider());
+            });
+
+            builder.Services.Configure<FormOptions>(x =>
+            {
+                x.ValueCountLimit = int.MaxValue;
             });
 
             // Add services to the container.
@@ -49,6 +56,12 @@ namespace SistemaCotizaciones
                 SupportedCultures = supportedCultures,
                 // UI strings that we have localized.
                 SupportedUICultures = supportedCultures
+            });
+
+            app.Use((context, next) =>
+            {
+                context.Request.EnableBuffering(); // Habilita el almacenamiento en búfer para permitir la lectura posterior del cuerpo de la solicitud.
+                return next();
             });
 
             // Configure the HTTP request pipeline.

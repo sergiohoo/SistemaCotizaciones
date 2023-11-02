@@ -11,7 +11,7 @@
     <a asp-action="Create">Crear nueva cotización</a>
 </p>
 <input class="form-control float-right col-md-3 offset-9 mb-2" id="inputBuscador" type="text" placeholder="Buscar...">
-<table id="tableData" class="table">
+<table id="tableData" class="table small">
     <thead>
         <tr>
             <th>
@@ -21,7 +21,22 @@
                 @Html.DisplayNameFor(model => model.Quote)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.FechaCotizacion)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Version)
+            </th>
+            <th>
+                Marca
+            </th>
+            <th>
+                Monto compra
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Margen)
+            </th>
+            <th>
+                Monto venta
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Usuario)
@@ -46,8 +61,31 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Quote.NumeroQuote)
                 </td>
+                @{
+                    var fechaCotizacion = item.FechaCotizacion?.ToString("dd/MM/yyyy");
+                }
+                <td style="white-space:nowrap;">
+                    @fechaCotizacion
+                </td>
                 <td class="text-center">
                     @Html.DisplayFor(modelItem => item.Version)
+                </td>
+                <td style="white-space:nowrap;">
+                    @Html.DisplayFor(modelItem => item.Fabricante.Nombre)
+                </td>
+                @{
+                    var montoVenta = item.TotalNeto;
+                    var montoCompra = item.TotalCompra;
+
+                }
+                <td style="white-space:nowrap;">
+                    @montoCompra
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Margen)
+                </td>
+                <td style="white-space:nowrap;">
+                    @montoVenta
                 </td>
                 @{
                     var usuario = item.Usuario.Nombre + " " + item.Usuario.Apellido;
