@@ -438,6 +438,82 @@ namespace SistemaCotizaciones.Controllers
             return View(cotizacion);
         }
 
+        public async Task<IActionResult> Template(int? id)
+        {
+            if (id == null || _context.Cotizaciones == null)
+            {
+                return NotFound();
+            }
+
+            var cotizacion = await _context.Cotizaciones.Where(c => c.CotizacionId == id).Include(c => c.MaterialesCotizacion).ThenInclude(m => m.Material).FirstOrDefaultAsync();
+
+            var quote = await _context.Quotes.Where(q => q.QuoteId == cotizacion.QuoteId).FirstOrDefaultAsync();
+            if (cotizacion == null || quote == null)
+            {
+                return NotFound();
+            }
+            ViewData["CanalId"] = new SelectList(_context.Canales, "CanalId", nameof(Canal.RazonSocial), cotizacion.CanalId);
+            ViewData["ClienteFinalId"] = new SelectList(_context.ClientesFinales, "ClienteFinalId", nameof(ClienteFinal.RazonSocial), cotizacion.ClienteFinalId);
+            ViewData["ContactoCanalId"] = new SelectList(_context.ContactosCanales.Where(c => c.CanalId == cotizacion.CanalId), "ContactoCanalId", nameof(ContactoCanal.Nombre), cotizacion.ContactoCanalId);
+            ViewData["ContactoClienteFinalId"] = new SelectList(_context.ContactosClientesFinales.Where(c => c.ClienteFinalId == cotizacion.ClienteFinalId), "ContactoClienteFinalId", nameof(ContactoClienteFinal.Nombre), cotizacion.ContactoClienteFinalId);
+            ViewData["FabricanteId"] = new SelectList(_context.Fabricantes, "FabricanteId", nameof(Fabricante.Nombre), cotizacion.FabricanteId);
+            ViewData["ContactoFabricanteId"] = new SelectList(_context.ContactosFabricantes.Where(f => f.FabricanteId == cotizacion.FabricanteId), "ContactoFabricanteId", nameof(ContactoFabricante.Nombre), quote.ContactoFabricanteId);
+            ViewData["QuoteId"] = new SelectList(_context.Quotes, "QuoteId", nameof(Quote.NumeroQuote), cotizacion.QuoteId);
+            ViewData["TipoCompraId"] = new SelectList(_context.TiposCompra, "TipoCompraId", nameof(TipoCompra.Nombre), cotizacion.TipoCompraId);
+            ViewData["TipoCotizacionId"] = new SelectList(_context.TiposCotizacion, "TipoCotizacionId", nameof(TipoCotizacion.Nombre), cotizacion.TipoCotizacionId);
+            ViewData["UsuarioId"] = new SelectList(_context.Usuarios, "UsuarioId", nameof(Usuario.NombreUsuario), cotizacion.UsuarioId);
+
+            var listaMateriales = _context.Materiales.OrderBy(m => m.Sku).ToList();
+            var selectListMateriales = new List<SelectListItem>();
+            foreach (var material in listaMateriales)
+            {
+                var texto = material.Sku + " | " + material.Descripcion;
+
+                var itemMaterial = new SelectListItem
+                {
+                    Text = texto,
+                    Value = material.MaterialId.ToString()
+                };
+
+                selectListMateriales.Add(itemMaterial);
+            }
+
+
+            ViewData["Materiales"] = new SelectList(selectListMateriales, "Value", "Text");
+
+            var materiales = new List<MaterialCotizacion>();
+            foreach (var material in cotizacion.MaterialesCotizacion)
+            {
+                materiales.Add(material);
+            }
+
+            for (int i = 0; i < 100 - cotizacion.MaterialesCotizacion.Count; i++)
+            {
+                var material = new MaterialCotizacion
+                {
+                    FechaInicio = DateTime.Now,
+                    FechaTermino = DateTime.Now.AddDays(30),
+                    Cantidad = 0,
+                    ImpuestoDuty = 0,
+                    PrecioUnitario = 0,
+                    DescuentoPorcentaje = 0
+                };
+                materiales.Add(material);
+            }
+            cotizacion.MaterialesCotizacion = materiales;
+
+            cotizacion.FechaCotizacion = DateTime.Now;
+            quote.FechaEmision = DateTime.Now;
+
+            var model = new CotizacionCreateViewModel
+            {
+                Cotizacion = cotizacion,
+                Quote = quote
+            };
+
+            return View(model);
+        }
+
         // GET: Cotizaciones/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

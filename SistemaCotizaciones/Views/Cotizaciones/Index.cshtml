@@ -15,7 +15,7 @@
     <thead>
         <tr>
             <th>
-                ID Cotización
+                ID
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Quote)
@@ -47,6 +47,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.ClienteFinal)
             </th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -99,12 +100,15 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.ClienteFinal.RazonSocial)
                 </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.CotizacionId"><i class="fa-solid fa-pen-to-square"></i></a> |
-                    <a asp-action="Delete" asp-route-id="@item.CotizacionId"><i class="fa-solid fa-trash"></i></a> |
-                    <a asp-action="Excel" asp-route-id="@item.CotizacionId" target="_blank"><i class="fas fa-file-excel"></i></a> |
-                    <a asp-action="PDF" asp-route-id="@item.CotizacionId" target="_blank"><i class="fas fa-file-pdf"></i></a>
-                    <a asp-action="Create" asp-controller="Pocc" asp-route-id="@item.CotizacionId" target="_blank">POCC</a>
+                <td style="white-space:nowrap;">
+                    <a asp-action="Edit" asp-route-id="@item.CotizacionId" title="Modificar cotización"><i class="fa-solid fa-pen-to-square"></i></a>
+                    <a asp-action="Template" asp-route-id="@item.CotizacionId" title="Duplicar cotización"><i class="fa-solid fa-copy"></i></a>
+                    <a asp-action="Delete" asp-route-id="@item.CotizacionId" class="text-danger" title="Eliminar cotización"><i class="fa-solid fa-trash"></i></a>
+                </td>
+                <td style="white-space:nowrap;">
+                    <a asp-action="Excel" asp-route-id="@item.CotizacionId" title="Exportar a Excel" target="_blank"><i class="fas fa-file-excel"></i></a>
+                    <a asp-action="PDF" asp-route-id="@item.CotizacionId" title="Exportar a PDF" target="_blank"><i class="fas fa-file-pdf"></i></a>
+                    <a asp-action="Create" asp-controller="Pocc" class="small-text" title="Crear POCC" asp-route-id="@item.CotizacionId" target="_blank">POCC</a>
                 </td>
             </tr>
         }
