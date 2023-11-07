@@ -1159,7 +1159,7 @@
             var input = inputs.eq(i);
 
             if (document.activeElement.id == input.attr("id")) {
-                const dates = e.clipboardData.getData('text').split(' ');
+                const dates = e.clipboardData.getData('text').trim().split(' ');
                 if (dates.length == 2) {
 
                     var id = input.attr("id").split('__')[0];
