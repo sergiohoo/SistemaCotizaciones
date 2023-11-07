@@ -1149,4 +1149,58 @@
         }
         CalculaTotales();
     });
+
+    const inputs = $('input[type=date]');
+
+    document.querySelector('body').addEventListener('paste', (e) => {
+
+        for (i = 0; i < inputs.length; i++) {
+            
+            var input = inputs.eq(i);
+
+            if(document.activeElement.id == input.attr("id"))
+            {
+                const dates = e.clipboardData.getData('text').split(' ');
+                if(dates.length == 2) {
+
+                    var id = input.attr("id").split('__')[0];
+
+                    var inputInicio = $("#"+id+"__FechaInicio");
+                    var inputTermino = $("#"+id+"__FechaTermino");
+
+                    console.log(inputInicio);
+                    console.log(inputTermino);
+
+                    var d0 = dates[0].split('/');
+                    var d1 = dates[1].split('/');
+                    if(d0.length == 3) {
+                        var y = d0[2];
+                        if(d0[2].length == 2) {
+                            y = "20"+y;
+                        }
+                        inputInicio.val(y+"-"+d0[0]+"-"+d0[1]);
+                    }
+
+                    if(d1.length == 3) {
+                        var y = d1[2];
+                        if(d1[2].length == 2) {
+                            y = "20"+y;
+                        }
+                        inputTermino.val(y + "-" + d1[0] + "-" + d1[1]);
+                    }
+                }
+                else if(dates.length == 1) {
+                    var d0 = dates[0].split('/');
+                    if (d0.length == 3) {
+                        var y = d0[2];
+                        if (d0[2].length == 2) {
+                            y = "20" + y;
+                        }
+                        input.val(y + "-" + d0[0] + "-" + d0[1]);
+                    }
+                }
+            }
+        }
+
+    });
 </script>
